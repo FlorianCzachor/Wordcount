@@ -17,14 +17,14 @@ public class WordCounter {
 
     private static final String STOP_WORDS_FILE_PATH = "src/main/resources/stopwords.txt";
 
-    public int countWords(Path userInputFile) {
-        Objects.requireNonNull(userInputFile, "user input file path must not be null");
+    public int countWords(Path inputFile) {
+        Objects.requireNonNull(inputFile, "input file path must not be null");
 
         try {
-            var inputText = Files.readString(userInputFile);
+            var inputText = Files.readString(inputFile);
             return countWords(inputText);
         } catch (IOException e) {
-            throw new RuntimeException(format("Can't find user input file: ' %s", userInputFile.getFileName()), e);
+            throw new RuntimeException(format("Can't find input file: ' %s", inputFile.getFileName()), e);
         }
     }
 
