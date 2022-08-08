@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -14,38 +17,25 @@ public class WordCounter {
 
     private static final String STOP_WORDS_FILE_PATH = "src/main/resources/stopwords.txt";
 
-    public int count(Path userInputFile) {
+    public int countWords(Path userInputFile) {
         Objects.requireNonNull(userInputFile, "user input file path must not be null");
 
-        List<String> stopWords = getStopWords();
         try {
-            List<String> words = new ArrayList<>();
-            for (String line : Files.readAllLines(userInputFile)) {
-                words.addAll(parseWords(line.split(" ")));
-            }
-            return (int) words.stream()
-                .filter(w -> !stopWords.contains(w))
-                .count();
+            String input = Files.readString(userInputFile);
+            return countWords(input);
         } catch (IOException e) {
             throw new RuntimeException(format("Can't find user input file: ' %s", userInputFile.getFileName()), e);
         }
     }
 
-    public int count(String input) {
+    public int countWords(String input) {
         Objects.requireNonNull(input, "user input must not be null");
 
         List<String> stopWords = getStopWords();
-        List<String> words = parseWords(input.split(" "));
+        List<String> words = parseWords(input.split("[ \n]"));
         return (int) words.stream()
             .filter(w -> !stopWords.contains(w))
             .count();
-    }
-
-    private List<String> parseWords(String[] inputWords) {
-        return Arrays.stream(inputWords)
-            .filter(s -> !s.isEmpty())
-            .filter(word -> word.chars().allMatch(Character::isLetter))
-            .collect(Collectors.toList());
     }
 
     private List<String> getStopWords() {
@@ -58,6 +48,13 @@ public class WordCounter {
         } catch (IOException e) {
             return Collections.emptyList();
         }
+    }
+
+    private List<String> parseWords(String[] inputWords) {
+        return Arrays.stream(inputWords)
+            .filter(s -> !s.isEmpty())
+            .filter(word -> word.chars().allMatch(Character::isLetter))
+            .collect(Collectors.toList());
     }
 
 }

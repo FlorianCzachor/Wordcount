@@ -17,12 +17,12 @@ public class Main {
             Scanner s = new Scanner(System.in);
             String userInput = s.nextLine();
 
-            int count = new WordCounter().count(userInput);
+            int count = new WordCounter().countWords(userInput);
 
             System.out.println("Number of words: " + count);
         } else {
             Path userInputFile = Paths.get(format(RESOURCES_DIRECTORY_PATH, args[INDEX_OF_USER_INPUT_FILE]));
-            int count = new WordCounter().count(userInputFile);
+            int count = new WordCounter().countWords(userInputFile);
 
             System.out.println("Number of words: " + count);
         }

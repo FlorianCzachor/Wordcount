@@ -19,21 +19,21 @@ public class WordCounterTests {
     })
     void countsWords(String words, int expected) {
         WordCounter sut = new WordCounter();
-        int wordCount = sut.count(words);
+        int wordCount = sut.countWords(words);
         assertEquals(expected, wordCount, "word count");
     }
 
     @Test
     void countsOneWordSurroundedByWhiteSpaces() {
         WordCounter sut = new WordCounter();
-        int wordCount = sut.count("   word   ");
+        int wordCount = sut.countWords("   word   ");
         assertEquals(1, wordCount, "word count");
     }
 
     @Test
     void countsTwoWordsSeparatedByMultipleWhiteSpaces() {
         WordCounter sut = new WordCounter();
-        int wordCount = sut.count("word        word");
+        int wordCount = sut.countWords("word        word");
         assertEquals(2, wordCount, "word count");
     }
 
@@ -41,7 +41,7 @@ public class WordCounterTests {
     @ValueSource(strings = {"wo3rd", "wo$rd"})
     void doesNotCountWordCandidatesContainingANonLatinAlphabetCharacter(String wordCandidate) {
         WordCounter sut = new WordCounter();
-        int wordCount = sut.count(wordCandidate);
+        int wordCount = sut.countWords(wordCandidate);
         assertEquals(0, wordCount, "word count");
     }
 
@@ -49,7 +49,7 @@ public class WordCounterTests {
     @ValueSource(strings = {"word.", "word,", "word!", "word?"})
     void doesNotCountWordCandidatesContainingAPunctuationCharacter(String wordCandidate) {
         WordCounter sut = new WordCounter();
-        int wordCount = sut.count(wordCandidate);
+        int wordCount = sut.countWords(wordCandidate);
         assertEquals(0, wordCount, "word count");
     }
 
@@ -57,21 +57,21 @@ public class WordCounterTests {
     @ValueSource(strings = {"on", "the", "off", "a"})
     void doesNotCountStopWords(String wordCandidate) {
         WordCounter sut = new WordCounter();
-        int wordCount = sut.count(wordCandidate);
+        int wordCount = sut.countWords(wordCandidate);
         assertEquals(0, wordCount, "word count");
     }
 
     @Test
     void doesNotCountWordCandidateContainingAHyphenCharacter() {
         WordCounter sut = new WordCounter();
-        int wordCount = sut.count("word-word");
+        int wordCount = sut.countWords("word-word");
         assertEquals(0, wordCount, "word count");
     }
 
     @Test
     void userInputMustNotBeNull() {
         WordCounter sut = new WordCounter();
-        Exception exception = assertThrows(NullPointerException.class, () -> sut.count((String) null));
+        Exception exception = assertThrows(NullPointerException.class, () -> sut.countWords((String) null));
         assertEquals("user input must not be null", exception.getMessage());
     }
 }
