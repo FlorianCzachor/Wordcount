@@ -2,11 +2,16 @@ package org.example;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.asList;
 
 public class Wordcount {
 
@@ -40,25 +45,17 @@ public class Wordcount {
             .collect(Collectors.toList());
     }
 
-    private int stopWords(List<String> words) throws FileNotFoundException {
-        File f = new File("src/main/resources/stopwords.txt");
-        int stopwords = 0;
-        if (f.exists() && f.isFile()) {
-            Scanner s = new Scanner(f);
-            while (s.hasNextLine()) {
-                String line = s.nextLine();
-                String[] stopWords = line.split(" ");
-                for (String stopWord : stopWords) {
-                    for (String w : words) {
-                        if (w.equals(stopWord)) {
-                            stopwords++;
-                        }
-                    }
-                }
-            }
-            s.close();
+    private int stopWords(List<String> words) {
+        try {
+            List<String> stopWords = Files.lines(Paths.get("src/main/resources/stopwords.txt"))
+                .map(l -> asList(l.split(" ")))
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+
+            return (int) words.stream().filter(stopWords::contains).count();
+        } catch (IOException e) {
+            return 0;
         }
-        return stopwords;
     }
 
 }
