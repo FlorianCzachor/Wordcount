@@ -12,6 +12,8 @@ import static java.util.Arrays.asList;
 
 public class WordCounter {
 
+    private static final String STOP_WORDS_FILE_PATH = "src/main/resources/stopwords.txt";
+
     public int count(Path userInputFile) {
         Objects.requireNonNull(userInputFile, "file path must not be null");
 
@@ -48,7 +50,7 @@ public class WordCounter {
 
     private List<String> getStopWords() {
         try {
-            return Files.readAllLines(Paths.get("src/main/resources/stopwords.txt"))
+            return Files.readAllLines(Paths.get(STOP_WORDS_FILE_PATH))
                 .stream()
                 .map(l -> asList(l.split(" ")))
                 .flatMap(List::stream)

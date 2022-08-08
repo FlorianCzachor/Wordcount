@@ -9,6 +9,7 @@ import static java.lang.String.format;
 public class Main {
 
     private static final int INDEX_OF_USER_INPUT_FILE = 0;
+    private static final String RESOURCES_DIRECTORY_PATH = "src/main/resources/%s";
 
     public static void main(String[] args) {
         if (args.length == INDEX_OF_USER_INPUT_FILE) {
@@ -20,7 +21,7 @@ public class Main {
 
             System.out.println("Number of words: " + count);
         } else {
-            Path userInputFile = Paths.get(format("src/main/resources/%s", args[INDEX_OF_USER_INPUT_FILE]));
+            Path userInputFile = Paths.get(format(RESOURCES_DIRECTORY_PATH, args[INDEX_OF_USER_INPUT_FILE]));
             int count = new WordCounter().count(userInputFile);
 
             System.out.println("Number of words: " + count);
