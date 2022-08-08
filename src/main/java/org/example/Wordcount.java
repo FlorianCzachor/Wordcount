@@ -34,17 +34,11 @@ public class Wordcount {
     private List<String> checkWords(String[] inputWords) {
         List<String> fileContent = new ArrayList<>();
         for (String word : inputWords) {
-            boolean onlyLetters = true;
-            for (int i = 0; i < word.length(); i++) {
-                if (Character.isAlphabetic(word.charAt(i))) {
-                    continue;
-                }
-                onlyLetters = false;
-            }
+            boolean allLetters = word.chars().allMatch(Character::isLetter);
             if (word.equals("")) {
                 continue;
             }
-            if (onlyLetters) {
+            if (allLetters) {
                 fileContent.add(word);
             }
         }
