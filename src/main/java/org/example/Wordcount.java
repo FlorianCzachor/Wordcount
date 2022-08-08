@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
@@ -18,15 +15,15 @@ public class Wordcount {
     public int count(Path userInputFile) {
         Objects.requireNonNull(userInputFile, "file path must not be null");
 
+        List<String> stopWords = getStopWords();
         try {
             List<String> words = new ArrayList<>();
-            int stopWordOccurrences = 0;
-            List<String> lines = Files.readAllLines(userInputFile);
-            for (String l : lines) {
+            for (String l : Files.readAllLines(userInputFile)) {
                 words.addAll(parseWords(l.split(" ")));
-                stopWordOccurrences = countStopWordOccurrencesIn(words);
             }
-            return words.size() - stopWordOccurrences;
+            return (int) words.stream()
+                .filter(w -> !stopWords.contains(w))
+                .count();
         } catch (IOException e) {
             throw new RuntimeException(format("Can't find user input file: ' %s", userInputFile.getFileName()), e);
         }
@@ -35,9 +32,11 @@ public class Wordcount {
     public int count(String input) {
         Objects.requireNonNull(input, "user input must not be null");
 
+        List<String> stopWords = getStopWords();
         List<String> words = parseWords(input.split(" "));
-        int stopWordOccurrences = countStopWordOccurrencesIn(words);
-        return words.size() - stopWordOccurrences;
+        return (int) words.stream()
+            .filter(w -> !stopWords.contains(w))
+            .count();
     }
 
     private List<String> parseWords(String[] inputWords) {
@@ -47,17 +46,15 @@ public class Wordcount {
             .collect(Collectors.toList());
     }
 
-    private int countStopWordOccurrencesIn(List<String> words) {
+    private List<String> getStopWords() {
         try {
-            List<String> stopWords = Files.readAllLines(Paths.get("src/main/resources/stopwords.txt"))
+            return Files.readAllLines(Paths.get("src/main/resources/stopwords.txt"))
                 .stream()
                 .map(l -> asList(l.split(" ")))
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
-
-            return (int) words.stream().filter(stopWords::contains).count();
         } catch (IOException e) {
-            return 0;
+            return Collections.emptyList();
         }
     }
 
