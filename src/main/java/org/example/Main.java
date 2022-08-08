@@ -12,7 +12,7 @@ public class Main {
     private static final String RESOURCES_DIRECTORY_PATH = "src/main/resources/%s";
 
     public static void main(String[] args) {
-        if (args.length == INDEX_OF_USER_INPUT_FILE) {
+        if (args.length == 0) {
             System.out.print("Enter text: ");
             Scanner s = new Scanner(System.in);
             String userInput = s.nextLine();
