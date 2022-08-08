@@ -10,13 +10,11 @@ public class Main {
             Scanner s = new Scanner(System.in);
             String userInput = s.nextLine();
 
-            Wordcount w = new Wordcount();
-            int count = w.count(userInput);
+            int count = new WordCounter().count(userInput);
 
             System.out.println("Number of words: " + count);
         } else {
-            Wordcount w = new Wordcount();
-            int count = w.count(Paths.get("src/main/resources/" + args[0]));
+            int count = new WordCounter().count(Paths.get("src/main/resources/" + args[0]));
 
             System.out.println("Number of words: " + count);
         }

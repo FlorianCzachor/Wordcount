@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
-public class Wordcount {
+public class WordCounter {
 
     public int count(Path userInputFile) {
         Objects.requireNonNull(userInputFile, "file path must not be null");
