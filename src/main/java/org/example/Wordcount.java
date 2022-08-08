@@ -2,6 +2,7 @@ package org.example;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,28 +15,30 @@ import static java.util.Arrays.asList;
 
 public class Wordcount {
 
-    public int count(String input, String filename) {
-        Objects.requireNonNull(input, "user input must not be null");
+    public int count(Path path) {
+        Objects.requireNonNull(path, "file path must not be null");
 
         List<String> words = new ArrayList<>();
         int stopWordOccurrences = 0;
-
-        if (filename.isEmpty()) {
-            String[] inputWords = input.split(" ");
-            words = checkWords(inputWords);
-            stopWordOccurrences = countStopWordOccurrencesIn(words);
-        } else {
-            try {
-                List<String> lines = Files.readAllLines(Paths.get("src/main/resources/" + filename));
-                for (String l : lines) {
-                    String[] inputWords = l.split(" ");
-                    words.addAll(checkWords(inputWords));
-                    stopWordOccurrences = countStopWordOccurrencesIn(words);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(format("Can't find user input file: ' %s", filename), e);
+        try {
+            List<String> lines = Files.readAllLines(path);
+            for (String l : lines) {
+                String[] inputWords = l.split(" ");
+                words.addAll(checkWords(inputWords));
+                stopWordOccurrences = countStopWordOccurrencesIn(words);
             }
+        } catch (IOException e) {
+            throw new RuntimeException(format("Can't find user input file: ' %s", path.getFileName()), e);
         }
+        return words.size() - stopWordOccurrences;
+    }
+
+    public int count(String input) {
+        Objects.requireNonNull(input, "user input must not be null");
+
+        String[] inputWords = input.split(" ");
+        List<String> words = checkWords(inputWords);
+        int stopWordOccurrences = countStopWordOccurrencesIn(words);
         return words.size() - stopWordOccurrences;
     }
 

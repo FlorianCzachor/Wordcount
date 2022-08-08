@@ -1,22 +1,21 @@
 package org.example;
 
-import java.io.FileNotFoundException;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
-        String filename = "";
-        String input = "";
-
+    public static void main(String[] args) {
         if (args.length == 0) {
             Scanner s = new Scanner(System.in);
             System.out.print("Enter text: ");
-            input = s.nextLine();
+            String input = s.nextLine();
+            Wordcount w = new Wordcount();
+            int count = w.count(input);
+            System.out.println("Number of words: " + count);
         } else {
-            filename = args[0];
+            Wordcount w = new Wordcount();
+            int count = w.count(Paths.get("src/main/resources/" + args[0]));
+            System.out.println("Number of words: " + count);
         }
-        Wordcount w = new Wordcount();
-        int count = w.count(input, filename);
-        System.out.println("Number of words: " + count);
     }
 }

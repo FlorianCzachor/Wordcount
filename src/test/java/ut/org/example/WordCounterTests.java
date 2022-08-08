@@ -23,21 +23,21 @@ public class WordCounterTests {
     })
     void countsWords(String words, int expected) throws FileNotFoundException {
         Wordcount sut = new Wordcount();
-        int wordCount = sut.count(words, IGNORE_FILE_NAME);
+        int wordCount = sut.count(words);
         assertEquals(expected, wordCount, "word count");
     }
 
     @Test
     void countsOneWordSurroundedByWhiteSpaces() throws FileNotFoundException {
         Wordcount sut = new Wordcount();
-        int wordCount = sut.count("   word   ", IGNORE_FILE_NAME);
+        int wordCount = sut.count("   word   ");
         assertEquals(1, wordCount, "word count");
     }
 
     @Test
     void countsTwoWordsSeparatedByMultipleWhiteSpaces() throws FileNotFoundException {
         Wordcount sut = new Wordcount();
-        int wordCount = sut.count("word        word", IGNORE_FILE_NAME);
+        int wordCount = sut.count("word        word");
         assertEquals(2, wordCount, "word count");
     }
 
@@ -45,7 +45,7 @@ public class WordCounterTests {
     @ValueSource(strings = {"wo3rd", "wo$rd"})
     void doesNotCountWordCandidatesContainingANonLatinAlphabetCharacter(String wordCandidate) throws FileNotFoundException {
         Wordcount sut = new Wordcount();
-        int wordCount = sut.count(wordCandidate, IGNORE_FILE_NAME);
+        int wordCount = sut.count(wordCandidate);
         assertEquals(0, wordCount, "word count");
     }
 
@@ -53,7 +53,7 @@ public class WordCounterTests {
     @ValueSource(strings = {"word.", "word,", "word!", "word?"})
     void doesNotCountWordCandidatesContainingAPunctuationCharacter(String wordCandidate) throws FileNotFoundException {
         Wordcount sut = new Wordcount();
-        int wordCount = sut.count(wordCandidate, IGNORE_FILE_NAME);
+        int wordCount = sut.count(wordCandidate);
         assertEquals(0, wordCount, "word count");
     }
 
@@ -61,21 +61,21 @@ public class WordCounterTests {
     @ValueSource(strings = {"on", "the", "off", "a"})
     void doesNotCountStopWords(String wordCandidate) throws FileNotFoundException {
         Wordcount sut = new Wordcount();
-        int wordCount = sut.count(wordCandidate, IGNORE_FILE_NAME);
+        int wordCount = sut.count(wordCandidate);
         assertEquals(0, wordCount, "word count");
     }
 
     @Test
     void doesNotCountWordCandidateContainingAHyphenCharacter() throws FileNotFoundException {
         Wordcount sut = new Wordcount();
-        int wordCount = sut.count("word-word", IGNORE_FILE_NAME);
+        int wordCount = sut.count("word-word");
         assertEquals(0, wordCount, "word count");
     }
 
     @Test
     void userInputMustNotBeNull() {
         Wordcount sut = new Wordcount();
-        Exception exception = assertThrows(NullPointerException.class, () -> sut.count(null, IGNORE_FILE_NAME));
+        Exception exception = assertThrows(NullPointerException.class, () -> sut.count((String) null));
         assertEquals("user input must not be null", exception.getMessage());
     }
 }
