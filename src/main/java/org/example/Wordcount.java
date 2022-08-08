@@ -39,7 +39,10 @@ public class Wordcount {
                     onlyLetters = false;
                 }
             }
-            if (!word.equals("") && onlyLetters) {
+            if (word.equals("")) {
+                continue;
+            }
+            if (onlyLetters) {
                 fileContent.add(word);
             }
         }
