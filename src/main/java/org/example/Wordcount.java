@@ -36,9 +36,10 @@ public class Wordcount {
         for (String word : inputWords) {
             boolean onlyLetters = true;
             for (int i = 0; i < word.length(); i++) {
-                if (!Character.isAlphabetic(word.charAt(i))) {
-                    onlyLetters = false;
+                if (Character.isAlphabetic(word.charAt(i))) {
+                    continue;
                 }
+                onlyLetters = false;
             }
             if (word.equals("")) {
                 continue;
