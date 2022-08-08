@@ -36,7 +36,7 @@ public class Wordcount {
         for (String word : inputWords) {
             boolean onlyLetters = true;
             for (int i = 0; i < word.length(); i++) {
-                if (containsSymbol(word.charAt(i))) {
+                if (!Character.isAlphabetic(word.charAt(i))) {
                     onlyLetters = false;
                 }
             }
@@ -72,7 +72,4 @@ public class Wordcount {
         return stopwords;
     }
 
-    public boolean containsSymbol(int charValue) {
-        return (charValue < 'A') || ((charValue > 'Z') && (charValue < 'a')) || (charValue > 'z');
-    }
 }
