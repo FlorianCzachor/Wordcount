@@ -40,24 +40,23 @@ public class Wordcount {
             .collect(Collectors.toList());
     }
 
-    private int stopWords(List<String> result) throws FileNotFoundException {
+    private int stopWords(List<String> words) throws FileNotFoundException {
         File f = new File("src/main/resources/stopwords.txt");
         int stopwords = 0;
-
         if (f.exists() && f.isFile()) {
-            Scanner myReader = new Scanner(f);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                String[] inputWords = data.split(" ");
-                for (String inputWord : inputWords) {
-                    for (String s : result) {
-                        if (s.equals(inputWord)) {
+            Scanner s = new Scanner(f);
+            while (s.hasNextLine()) {
+                String line = s.nextLine();
+                String[] stopWords = line.split(" ");
+                for (String stopWord : stopWords) {
+                    for (String w : words) {
+                        if (w.equals(stopWord)) {
                             stopwords++;
                         }
                     }
                 }
             }
-            myReader.close();
+            s.close();
         }
         return stopwords;
     }
