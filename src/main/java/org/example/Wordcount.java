@@ -44,7 +44,7 @@ public class Wordcount {
         File f = new File("src/main/resources/stopwords.txt");
         int stopwords = 0;
 
-        if (f.exists() && !f.isDirectory()) {
+        if (f.exists() && f.isFile()) {
             Scanner myReader = new Scanner(f);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
