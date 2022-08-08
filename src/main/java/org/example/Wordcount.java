@@ -78,6 +78,8 @@ public class Wordcount {
 
         final int MIN_LOWERCASE_CHAR_VALUE = 97;
         final int MAX_LOWERCASE_CHAR_VALUE = 122;
-        return charValue < MIN_UPPERCASE_CHAR_VALUE || charValue > MAX_UPPERCASE_CHAR_VALUE && charValue < MIN_LOWERCASE_CHAR_VALUE || charValue > MAX_LOWERCASE_CHAR_VALUE;
+        return (charValue < MIN_UPPERCASE_CHAR_VALUE)
+                || ((charValue > MAX_UPPERCASE_CHAR_VALUE) && (charValue < MIN_LOWERCASE_CHAR_VALUE))
+                || (charValue > MAX_LOWERCASE_CHAR_VALUE);
     }
 }
