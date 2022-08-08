@@ -15,7 +15,7 @@ public class WordCounter {
     private static final String STOP_WORDS_FILE_PATH = "src/main/resources/stopwords.txt";
 
     public int count(Path userInputFile) {
-        Objects.requireNonNull(userInputFile, "file path must not be null");
+        Objects.requireNonNull(userInputFile, "user input file path must not be null");
 
         List<String> stopWords = getStopWords();
         try {
