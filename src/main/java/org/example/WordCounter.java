@@ -20,8 +20,8 @@ public class WordCounter {
         List<String> stopWords = getStopWords();
         try {
             List<String> words = new ArrayList<>();
-            for (String l : Files.readAllLines(userInputFile)) {
-                words.addAll(parseWords(l.split(" ")));
+            for (String line : Files.readAllLines(userInputFile)) {
+                words.addAll(parseWords(line.split(" ")));
             }
             return (int) words.stream()
                 .filter(w -> !stopWords.contains(w))
