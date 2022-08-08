@@ -8,12 +8,12 @@ public class Main {
         String filename = "";
         String input = "";
 
-        if (args.length != 0) {
-            filename = args[0];
-        } else {
+        if (args.length == 0) {
             Scanner s = new Scanner(System.in);
             System.out.print("Enter text: ");
             input = s.nextLine();
+        } else {
+            filename = args[0];
         }
         Wordcount w = new Wordcount();
         int count = w.count(input, filename);
