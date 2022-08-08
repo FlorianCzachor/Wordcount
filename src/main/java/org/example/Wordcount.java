@@ -19,14 +19,14 @@ public class Wordcount {
             Scanner myReader = new Scanner(f);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                String inputWords[] = data.split(" ");
+                String[] inputWords = data.split(" ");
                 List<String> temp = checkWords(inputWords);
                 result.addAll(temp);
                 stopwords = stopWords(result);
             }
             myReader.close();
         } else {
-            String inputWords[] = input.split(" ");
+            String[] inputWords = input.split(" ");
             result = checkWords(inputWords);
             stopwords = stopWords(result);
         }
@@ -48,7 +48,7 @@ public class Wordcount {
             Scanner myReader = new Scanner(f);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
-                String inputWords[] = data.split(" ");
+                String[] inputWords = data.split(" ");
                 for (int i = 0; i < inputWords.length; i++) {
                     for (int j = 0; j < result.size(); j++) {
                         if (result.get(j).equals(inputWords[i])) {
