@@ -72,6 +72,6 @@ public class WordCounterTests {
     void userInputMustNotBeNull() {
         WordCounter sut = new WordCounter();
         Exception exception = assertThrows(NullPointerException.class, () -> sut.countWords((String) null));
-        assertEquals("user input must not be null", exception.getMessage());
+        assertEquals("input text must not be null", exception.getMessage());
     }
 }
