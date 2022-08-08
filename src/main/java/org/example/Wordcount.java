@@ -8,11 +8,6 @@ import java.util.Scanner;
 
 public class Wordcount {
 
-    private static final int ASCII_CHAR_UPPER_CASE_A = 65;
-    private static final int ASCII_CHAR_UPPER_CASE_Z = 90;
-    private static final int ASCII_CHAR_LOWER_CASE_A = 97;
-    private static final int ASCII_CHAR_LOWER_CASE_Z = 122;
-
     public int count(String input, String filename) throws FileNotFoundException {
         File f = new File("src/main/resources/" + filename);
         List<String> result = new ArrayList<>();
@@ -78,8 +73,6 @@ public class Wordcount {
     }
 
     public boolean containsSymbol(int charValue) {
-        return (charValue < ASCII_CHAR_UPPER_CASE_A)
-                || ((charValue > ASCII_CHAR_UPPER_CASE_Z) && (charValue < ASCII_CHAR_LOWER_CASE_A))
-                || (charValue > ASCII_CHAR_LOWER_CASE_Z);
+        return (charValue < 'A') || ((charValue > 'Z') && (charValue < 'a')) || (charValue > 'z');
     }
 }
