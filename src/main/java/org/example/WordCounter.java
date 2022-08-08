@@ -21,18 +21,18 @@ public class WordCounter {
         Objects.requireNonNull(userInputFile, "user input file path must not be null");
 
         try {
-            String input = Files.readString(userInputFile);
-            return countWords(input);
+            String inputText = Files.readString(userInputFile);
+            return countWords(inputText);
         } catch (IOException e) {
             throw new RuntimeException(format("Can't find user input file: ' %s", userInputFile.getFileName()), e);
         }
     }
 
-    public int countWords(String input) {
-        Objects.requireNonNull(input, "user input must not be null");
+    public int countWords(String inputText) {
+        Objects.requireNonNull(inputText, "input text must not be null");
 
         List<String> stopWords = getStopWords();
-        List<String> words = parseWords(input.split("[ \n]"));
+        List<String> words = parseWords(inputText.split("[ \n]"));
         return (int) words.stream()
             .filter(w -> !stopWords.contains(w))
             .count();
