@@ -1,13 +1,18 @@
 package org.example;
-import java.util.*;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Wordcount {
     public int count(String input, String filename) throws FileNotFoundException {
         File f = new File("src/main/resources/" + filename);
         List<String> result = new ArrayList<>();
         int stopwords = 0;
 
-        if (f.exists() && !f.isDirectory()) {
+        if (f.exists() && f.isFile()) {
             Scanner myReader = new Scanner(f);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
@@ -29,7 +34,7 @@ public class Wordcount {
         List<String> fileContent = new ArrayList<>();
         for (String word : inputWords) {
             boolean onlyLetters = true;
-            for (int i=0; i<word.length(); i++) {
+            for (int i = 0; i < word.length(); i++) {
                 if (containsSymbol(word.charAt(i))) {
                     onlyLetters = false;
                 }
@@ -50,8 +55,8 @@ public class Wordcount {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String inputWords[] = data.split(" ");
-                for (int i=0; i<inputWords.length; i++) {
-                    for (int j=0; j<result.size(); j++) {
+                for (int i = 0; i < inputWords.length; i++) {
+                    for (int j = 0; j < result.size(); j++) {
                         if (result.get(j).equals(inputWords[i])) {
                             stopwords++;
                         }
