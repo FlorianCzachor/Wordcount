@@ -15,29 +15,27 @@ import static java.util.Arrays.asList;
 
 public class Wordcount {
 
-    public int count(Path path) {
-        Objects.requireNonNull(path, "file path must not be null");
+    public int count(Path userInputFile) {
+        Objects.requireNonNull(userInputFile, "file path must not be null");
 
         try {
             List<String> words = new ArrayList<>();
             int stopWordOccurrences = 0;
-            List<String> lines = Files.readAllLines(path);
+            List<String> lines = Files.readAllLines(userInputFile);
             for (String l : lines) {
-                String[] wordCandidates = l.split(" ");
-                words.addAll(parseWords(wordCandidates));
+                words.addAll(parseWords(l.split(" ")));
                 stopWordOccurrences = countStopWordOccurrencesIn(words);
             }
             return words.size() - stopWordOccurrences;
         } catch (IOException e) {
-            throw new RuntimeException(format("Can't find user input file: ' %s", path.getFileName()), e);
+            throw new RuntimeException(format("Can't find user input file: ' %s", userInputFile.getFileName()), e);
         }
     }
 
     public int count(String input) {
         Objects.requireNonNull(input, "user input must not be null");
 
-        String[] inputWords = input.split(" ");
-        List<String> words = parseWords(inputWords);
+        List<String> words = parseWords(input.split(" "));
         int stopWordOccurrences = countStopWordOccurrencesIn(words);
         return words.size() - stopWordOccurrences;
     }
