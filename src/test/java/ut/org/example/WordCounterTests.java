@@ -6,14 +6,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.FileNotFoundException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class WordCounterTests {
-
-    private static final String IGNORE_FILE_NAME = "";
 
     @ParameterizedTest
     @CsvSource({
@@ -21,21 +17,21 @@ public class WordCounterTests {
         "word word, 2",
         "word word word, 3",
     })
-    void countsWords(String words, int expected) throws FileNotFoundException {
+    void countsWords(String words, int expected) {
         Wordcount sut = new Wordcount();
         int wordCount = sut.count(words);
         assertEquals(expected, wordCount, "word count");
     }
 
     @Test
-    void countsOneWordSurroundedByWhiteSpaces() throws FileNotFoundException {
+    void countsOneWordSurroundedByWhiteSpaces() {
         Wordcount sut = new Wordcount();
         int wordCount = sut.count("   word   ");
         assertEquals(1, wordCount, "word count");
     }
 
     @Test
-    void countsTwoWordsSeparatedByMultipleWhiteSpaces() throws FileNotFoundException {
+    void countsTwoWordsSeparatedByMultipleWhiteSpaces() {
         Wordcount sut = new Wordcount();
         int wordCount = sut.count("word        word");
         assertEquals(2, wordCount, "word count");
@@ -43,7 +39,7 @@ public class WordCounterTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"wo3rd", "wo$rd"})
-    void doesNotCountWordCandidatesContainingANonLatinAlphabetCharacter(String wordCandidate) throws FileNotFoundException {
+    void doesNotCountWordCandidatesContainingANonLatinAlphabetCharacter(String wordCandidate) {
         Wordcount sut = new Wordcount();
         int wordCount = sut.count(wordCandidate);
         assertEquals(0, wordCount, "word count");
@@ -51,7 +47,7 @@ public class WordCounterTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"word.", "word,", "word!", "word?"})
-    void doesNotCountWordCandidatesContainingAPunctuationCharacter(String wordCandidate) throws FileNotFoundException {
+    void doesNotCountWordCandidatesContainingAPunctuationCharacter(String wordCandidate) {
         Wordcount sut = new Wordcount();
         int wordCount = sut.count(wordCandidate);
         assertEquals(0, wordCount, "word count");
@@ -59,14 +55,14 @@ public class WordCounterTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"on", "the", "off", "a"})
-    void doesNotCountStopWords(String wordCandidate) throws FileNotFoundException {
+    void doesNotCountStopWords(String wordCandidate) {
         Wordcount sut = new Wordcount();
         int wordCount = sut.count(wordCandidate);
         assertEquals(0, wordCount, "word count");
     }
 
     @Test
-    void doesNotCountWordCandidateContainingAHyphenCharacter() throws FileNotFoundException {
+    void doesNotCountWordCandidateContainingAHyphenCharacter() {
         Wordcount sut = new Wordcount();
         int wordCount = sut.count("word-word");
         assertEquals(0, wordCount, "word count");

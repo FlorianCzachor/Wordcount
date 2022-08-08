@@ -5,7 +5,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 import static java.lang.String.format;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -17,7 +20,6 @@ public class WordCounterTests {
     private final InputStream systemIn = System.in;
     private final PrintStream systemOut = System.out;
 
-    private ByteArrayInputStream testIn;
     private ByteArrayOutputStream testOut;
 
     @BeforeEach
@@ -33,8 +35,8 @@ public class WordCounterTests {
     }
 
     @Test
-    void countsWordsFromCommandLineUserInput() throws FileNotFoundException {
-        testIn = new ByteArrayInputStream("Mary had a little lamb".getBytes());
+    void countsWordsFromCommandLineUserInput() {
+        ByteArrayInputStream testIn = new ByteArrayInputStream("Mary had a little lamb".getBytes());
         System.setIn(testIn);
 
         Main.main(NO_ARGS);
@@ -45,7 +47,7 @@ public class WordCounterTests {
     }
 
     @Test
-    void countsWordsFromFileUserInput() throws FileNotFoundException {
+    void countsWordsFromFileUserInput() {
         Main.main(new String[]{"input.txt"});
 
         String actual = testOut.toString();
