@@ -3,8 +3,10 @@ package org.example;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Wordcount {
 
@@ -32,18 +34,10 @@ public class Wordcount {
     }
 
     private List<String> checkWords(String[] inputWords) {
-        List<String> fileContent = new ArrayList<>();
-        for (String word : inputWords) {
-            if (word.isEmpty()) {
-                continue;
-            }
-            
-            boolean allLetters = word.chars().allMatch(Character::isLetter);
-            if (allLetters) {
-                fileContent.add(word);
-            }
-        }
-        return fileContent;
+        return Arrays.stream(inputWords)
+                .filter(s -> !s.isEmpty())
+                .filter(word -> word.chars().allMatch(Character::isLetter))
+                .collect(Collectors.toList());
     }
 
     private int stopWords(List<String> result) throws FileNotFoundException {
