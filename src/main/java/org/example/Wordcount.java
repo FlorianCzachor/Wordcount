@@ -35,7 +35,7 @@ public class Wordcount {
         List<String> fileContent = new ArrayList<>();
         for (String word : inputWords) {
             boolean allLetters = word.chars().allMatch(Character::isLetter);
-            if (word.equals("")) {
+            if (word.isEmpty()) {
                 continue;
             }
             if (allLetters) {
