@@ -49,9 +49,9 @@ public class Wordcount {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String[] inputWords = data.split(" ");
-                for (int i = 0; i < inputWords.length; i++) {
-                    for (int j = 0; j < result.size(); j++) {
-                        if (result.get(j).equals(inputWords[i])) {
+                for (String inputWord : inputWords) {
+                    for (String s : result) {
+                        if (s.equals(inputWord)) {
                             stopwords++;
                         }
                     }
