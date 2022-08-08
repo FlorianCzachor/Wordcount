@@ -9,13 +9,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class WordCounterTests {
     @ParameterizedTest
     @CsvSource({
-            "word, 1",
-            "word word, 2",
-            "word word word, 3",
+        "word, 1",
+        "word word, 2",
+        "word word word, 3",
     })
     void countsWords(String words, int expected) throws FileNotFoundException {
         Wordcount sut = new Wordcount();
@@ -66,5 +67,12 @@ public class WordCounterTests {
         Wordcount sut = new Wordcount();
         int wordCount = sut.count("word-word", "ignore");
         assertEquals(0, wordCount, "word count");
+    }
+
+    @Test
+    void userInputMustNotBeNull() {
+        Wordcount sut = new Wordcount();
+        Exception exception = assertThrows(NullPointerException.class, () -> sut.count(null, "ignore"));
+        assertEquals("user input must not be null", exception.getMessage());
     }
 }

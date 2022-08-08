@@ -5,10 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -16,9 +13,11 @@ import static java.util.Arrays.asList;
 public class Wordcount {
 
     public int count(String input, String filename) throws FileNotFoundException {
+        Objects.requireNonNull(input, "user input must not be null");
+
         File f = new File("src/main/resources/" + filename);
-        List<String> result = new ArrayList<>();
-        int stopwords = 0;
+        List<String> words = new ArrayList<>();
+        int stopWordOccurrences = 0;
 
         if (f.exists() && f.isFile()) {
             Scanner myReader = new Scanner(f);
@@ -26,16 +25,16 @@ public class Wordcount {
                 String data = myReader.nextLine();
                 String[] inputWords = data.split(" ");
                 List<String> temp = checkWords(inputWords);
-                result.addAll(temp);
-                stopwords = stopWords(result);
+                words.addAll(temp);
+                stopWordOccurrences = countStopWordOccurrencesIn(words);
             }
             myReader.close();
         } else {
             String[] inputWords = input.split(" ");
-            result = checkWords(inputWords);
-            stopwords = stopWords(result);
+            words = checkWords(inputWords);
+            stopWordOccurrences = countStopWordOccurrencesIn(words);
         }
-        return result.size() - stopwords;
+        return words.size() - stopWordOccurrences;
     }
 
     private List<String> checkWords(String[] inputWords) {
@@ -45,7 +44,7 @@ public class Wordcount {
             .collect(Collectors.toList());
     }
 
-    private int stopWords(List<String> words) {
+    private int countStopWordOccurrencesIn(List<String> words) {
         try {
             List<String> stopWords = Files.lines(Paths.get("src/main/resources/stopwords.txt"))
                 .map(l -> asList(l.split(" ")))
