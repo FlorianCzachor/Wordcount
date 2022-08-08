@@ -21,7 +21,7 @@ public class WordCounter {
         Objects.requireNonNull(userInputFile, "user input file path must not be null");
 
         try {
-            String inputText = Files.readString(userInputFile);
+            var inputText = Files.readString(userInputFile);
             return countWords(inputText);
         } catch (IOException e) {
             throw new RuntimeException(format("Can't find user input file: ' %s", userInputFile.getFileName()), e);
@@ -31,8 +31,8 @@ public class WordCounter {
     public int countWords(String inputText) {
         Objects.requireNonNull(inputText, "input text must not be null");
 
-        List<String> stopWords = getStopWords();
-        List<String> words = parseWords(inputText.split("[ \n]"));
+        var stopWords = getStopWords();
+        var words = parseWords(inputText.split("[ \n]"));
         return (int) words.stream()
             .filter(w -> !stopWords.contains(w))
             .count();

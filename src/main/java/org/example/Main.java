@@ -14,15 +14,15 @@ public class Main {
     public static void main(String[] args) {
         if (args.length == 0) {
             System.out.print("Enter text: ");
-            Scanner s = new Scanner(System.in);
-            String userInput = s.nextLine();
+            var s = new Scanner(System.in);
+            var userInput = s.nextLine();
 
-            int count = new WordCounter().countWords(userInput);
+            var count = new WordCounter().countWords(userInput);
 
             System.out.println("Number of words: " + count);
         } else {
-            Path userInputFile = Paths.get(format(RESOURCES_DIRECTORY_PATH, args[INDEX_OF_USER_INPUT_FILE]));
-            int count = new WordCounter().countWords(userInputFile);
+            var userInputFile = Paths.get(format(RESOURCES_DIRECTORY_PATH, args[INDEX_OF_USER_INPUT_FILE]));
+            var count = new WordCounter().countWords(userInputFile);
 
             System.out.println("Number of words: " + count);
         }
