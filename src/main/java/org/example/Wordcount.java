@@ -18,31 +18,31 @@ public class Wordcount {
     public int count(Path path) {
         Objects.requireNonNull(path, "file path must not be null");
 
-        List<String> words = new ArrayList<>();
-        int stopWordOccurrences = 0;
         try {
+            List<String> words = new ArrayList<>();
+            int stopWordOccurrences = 0;
             List<String> lines = Files.readAllLines(path);
             for (String l : lines) {
-                String[] inputWords = l.split(" ");
-                words.addAll(checkWords(inputWords));
+                String[] wordCandidates = l.split(" ");
+                words.addAll(parseWords(wordCandidates));
                 stopWordOccurrences = countStopWordOccurrencesIn(words);
             }
+            return words.size() - stopWordOccurrences;
         } catch (IOException e) {
             throw new RuntimeException(format("Can't find user input file: ' %s", path.getFileName()), e);
         }
-        return words.size() - stopWordOccurrences;
     }
 
     public int count(String input) {
         Objects.requireNonNull(input, "user input must not be null");
 
         String[] inputWords = input.split(" ");
-        List<String> words = checkWords(inputWords);
+        List<String> words = parseWords(inputWords);
         int stopWordOccurrences = countStopWordOccurrencesIn(words);
         return words.size() - stopWordOccurrences;
     }
 
-    private List<String> checkWords(String[] inputWords) {
+    private List<String> parseWords(String[] inputWords) {
         return Arrays.stream(inputWords)
             .filter(s -> !s.isEmpty())
             .filter(word -> word.chars().allMatch(Character::isLetter))
