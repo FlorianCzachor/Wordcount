@@ -35,9 +35,9 @@ public class Wordcount {
 
     private List<String> checkWords(String[] inputWords) {
         return Arrays.stream(inputWords)
-                .filter(s -> !s.isEmpty())
-                .filter(word -> word.chars().allMatch(Character::isLetter))
-                .collect(Collectors.toList());
+            .filter(s -> !s.isEmpty())
+            .filter(word -> word.chars().allMatch(Character::isLetter))
+            .collect(Collectors.toList());
     }
 
     private int stopWords(List<String> result) throws FileNotFoundException {
