@@ -3,43 +3,52 @@ import java.util.*;
 import java.io.*;
 public class Wordcount {
     public int count(String input) throws FileNotFoundException {
-        int words = 0;
-        List<String> fileContent = new ArrayList<String>();
-
         File f = new File("src/main/resources/" + input);
+        List<String> result = new ArrayList<>();
+
         // Reading stopwords.txt file and adding words into ArrayList fileContent
         if (input.contains(".txt") && f.exists() && !f.isDirectory()) {
             Scanner myReader = new Scanner(f);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 String inputWords[] = data.split(" ");
-                for (int i=0; i<inputWords.length; i++) {
-                    fileContent.add(inputWords[i]);
-                }
+                result = checkWords(inputWords);
             }
             myReader.close();
-            words = fileContent.size();
         } else {
             Scanner s = new Scanner(System.in);
             System.out.print("Please enter a text: ");
             input = s.nextLine();
             String inputWords[] = input.split(" ");
-            words = inputWords.length;
+            result = checkWords(inputWords);
         }
+        return result.size();
+    }
 
-        // Checking if the input contains any words of stopwords.txt
-        /*
-        String inputWords[] = input.split(" ");
-        for (int i=0; i<inputWords.length; i++) {
-            for (int j=0; j<fileContent.size(); j++) {
-                if (fileContent.get(j).equals(inputWords[i]))
-                    words--;
+    private List<String> checkWords(String[] inputWords) {
+        List<String> fileContent = new ArrayList<>();
+        for (String word : inputWords) {
+            boolean onlyLetters = true;
+            for (int i=0; i<word.length(); i++) {
+                if (!isLetter(word.charAt(i))) {
+                    onlyLetters = false;
+                }
+            }
+            if (!word.equals("") && onlyLetters) {
+                fileContent.add(word);
             }
         }
-         */
+        return fileContent;
+    }
 
-        // Return number of words - number of stopwords
-        return words;
+    public boolean isLetter(int charValue) {
+        // ASCII Char Values
+        final int MIN_UPPERCASE_CHAR_VALUE = 65;
+        final int MAX_UPPERCASE_CHAR_VALUE = 90;
+
+        final int MIN_LOWERCASE_CHAR_VALUE = 97;
+        final int MAX_LOWERCASE_CHAR_VALUE = 122;
+        return charValue >= MIN_UPPERCASE_CHAR_VALUE && charValue <= MAX_UPPERCASE_CHAR_VALUE || charValue >= MIN_LOWERCASE_CHAR_VALUE && charValue <= MAX_LOWERCASE_CHAR_VALUE;
     }
 
     public static void main(String[] args) throws FileNotFoundException {
