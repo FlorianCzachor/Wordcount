@@ -19,12 +19,12 @@ public class Main {
 
             var count = new WordCounter().countWords(userInput);
 
-            System.out.println("Number of words: " + count);
+            System.out.printf("Number of words: %d%n", count);
         } else {
             var userInputFile = Paths.get(format(RESOURCES_DIRECTORY_PATH, args[INDEX_OF_USER_INPUT_FILE]));
             var count = new WordCounter().countWords(userInputFile);
 
-            System.out.println("Number of words: " + count);
+            System.out.printf("Number of words: %d%n", count);
         }
     }
 }
