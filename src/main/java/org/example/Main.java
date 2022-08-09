@@ -16,6 +16,7 @@ public class Main {
             Scanner s = new Scanner(System.in);
             System.out.print("Enter text: ");
             input = s.nextLine();
+            s.close();
         }
         Wordcount w = new Wordcount();
         int count = w.count(input, path);
