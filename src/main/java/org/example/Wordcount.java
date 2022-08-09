@@ -1,13 +1,19 @@
 package org.example;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.io.*;
 public class Wordcount {
-    public int count(String input, String filename) throws FileNotFoundException {
-        File f = new File("src/main/resources/" + filename);
+    public int count(String input, String path) throws FileNotFoundException {
+        File f = new File(path);
         List<String> result = new ArrayList<>();
         int stopwords = 0;
 
-        if (f.exists() && !f.isDirectory()) {
+        if (path == null) {
+            String inputWords[] = input.split(" ");
+            result = checkWords(inputWords);
+            stopwords = stopWords(result);
+        } else {
             Scanner myReader = new Scanner(f);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
@@ -17,10 +23,6 @@ public class Wordcount {
                 stopwords = stopWords(result);
             }
             myReader.close();
-        } else {
-            String inputWords[] = input.split(" ");
-            result = checkWords(inputWords);
-            stopwords = stopWords(result);
         }
         return result.size() - stopwords;
     }
