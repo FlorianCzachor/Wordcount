@@ -6,20 +6,21 @@ import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Main {
+    final static int MY_TEXT_FILEPATH = 0;
     public static void main(String[] args) throws FileNotFoundException {
         String path = null;
         String input = null;
 
-        if (args.length != 0 && Files.exists(Path.of(args[0]))) {
+        if (args.length != 0 && Files.exists(Path.of(args[MY_TEXT_FILEPATH]))) {
             path = args[0];
         } else {
-            Scanner s = new Scanner(System.in);
+            var userInput = new Scanner(System.in);
             System.out.print("Enter text: ");
-            input = s.nextLine();
-            s.close();
+            input = userInput.nextLine();
+            userInput.close();
         }
-        WordCounter w = new WordCounter();
-        int count = w.count(input, path);
-        System.out.println("Number of words: " + count);
+        var wc = new WordCounter();
+        var wordCount = wc.count(input, path);
+        System.out.println("Number of words: " + wordCount);
     }
 }
