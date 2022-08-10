@@ -38,7 +38,7 @@ public class Wordcount {
         for (String word : inputWords) {
             boolean onlyLetters = true;
             for (int i=0; i<word.length(); i++) {
-                if (containsSymbol(word.charAt(i))) {
+                if (!Character.isAlphabetic(word.charAt(i))) {
                     onlyLetters = false;
                 }
             }
@@ -51,18 +51,6 @@ public class Wordcount {
         }
         return fileContent;
     }
-
-    // Method containsSymbol checks if the char is outside of Rage: A-Z and a-z
-    public boolean containsSymbol(int charValue) {
-        // CleanCode: Replace Magic Numbers with Constants
-        // Group with New Lines
-        return !Character.isAlphabetic(charValue);
-        // CleanCode: Return Boolean Expressions Directly
-        //return (charValue < 'A')
-              //  || ((charValue > 'Z') && (charValue < 'a'))
-              //  || (charValue > 'z');
-    }
-
 
     // Method stopWords counts how many times a word of stopwords.txt is inside ArrayList result
     private int stopWords(List<String> result) throws FileNotFoundException {
