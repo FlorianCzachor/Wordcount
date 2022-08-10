@@ -19,6 +19,7 @@ public class Main {
             input = userInput.nextLine();
             userInput.close();
         }
+
         var wc = new WordCounter();
         var wordCount = wc.count(input, path);
         System.out.println("Number of words: " + wordCount);

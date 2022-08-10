@@ -7,7 +7,7 @@ public class WordCounter {
     final static String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
 
     public int count(String userInput, String myTextFilepath) throws FileNotFoundException {
-        Objects.requireNonNull(userInput, "Input must not be null");
+        Objects.requireNonNull(userInput, "UserInput must not be null");
         var wordCounter = new ArrayList<String>();
         var stopWords = 0;
 
