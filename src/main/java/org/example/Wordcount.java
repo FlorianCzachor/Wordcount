@@ -4,7 +4,9 @@ import java.io.*;
 
 // CleanCode: Avoid Negations & Always Use Braces
 public class Wordcount {
+
     public int count(String input, String path) throws FileNotFoundException {
+        Objects.requireNonNull(input, "Input must not be null");
         List<String> result = new ArrayList<>();
         int stopwords = 0;
 
@@ -29,7 +31,7 @@ public class Wordcount {
         return result.size() - stopwords;
     }
 
-    // Method checkWords checks if the words only constist of letters and returns a list of valid words
+    // Method checkWords checks if the words only consist of letters and returns a list of valid words
     private List<String> checkWords(String[] inputWords) {
         List<String> fileContent = new ArrayList<>();
         // CleanCode: Favor For-Each Over For Loops
@@ -40,8 +42,10 @@ public class Wordcount {
                     onlyLetters = false;
                 }
             }
-            if (onlyLetters && !word.equals("")) {
-                // PROBLEM?: Collection Modification During Iteration
+            if (word.equals("")) {
+                continue;
+            }
+            if (onlyLetters) {
                 fileContent.add(word);
             }
         }
@@ -52,14 +56,11 @@ public class Wordcount {
     public boolean containsSymbol(int charValue) {
         // CleanCode: Replace Magic Numbers with Constants
         // Group with New Lines
-        // ASCII Char Values
-        final int MIN_UPPERCASE_CHAR_VALUE = 65;
-        final int MAX_UPPERCASE_CHAR_VALUE = 90;
-
-        final int MIN_LOWERCASE_CHAR_VALUE = 97;
-        final int MAX_LOWERCASE_CHAR_VALUE = 122;
+        return !Character.isAlphabetic(charValue);
         // CleanCode: Return Boolean Expressions Directly
-        return charValue < MIN_UPPERCASE_CHAR_VALUE || charValue > MAX_UPPERCASE_CHAR_VALUE && charValue < MIN_LOWERCASE_CHAR_VALUE || charValue > MAX_LOWERCASE_CHAR_VALUE;
+        //return (charValue < 'A')
+              //  || ((charValue > 'Z') && (charValue < 'a'))
+              //  || (charValue > 'z');
     }
 
 
@@ -71,10 +72,10 @@ public class Wordcount {
         Scanner myReader = new Scanner(stopwords);
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();
-            String inputWords[] = data.split(" ");
-            for (int i=0; i<inputWords.length; i++) {
-                for (int j=0; j<result.size(); j++) {
-                    if (result.get(j).equals(inputWords[i])) {
+            String[] inputWords = data.split(" ");
+            for (String inputWord : inputWords) {
+                for (String s : result) {
+                    if (s.equals(inputWord)) {
                         words++;
                     }
                 }
