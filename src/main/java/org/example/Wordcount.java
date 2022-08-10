@@ -7,37 +7,37 @@ public class Wordcount {
 
     public int count(String input, String path) throws FileNotFoundException {
         Objects.requireNonNull(input, "Input must not be null");
-        List<String> result = new ArrayList<>();
-        int stopwords = 0;
+        var wordCount = new ArrayList<String>();
+        var stopWords = 0;
 
         // CleanCode: Avoid NullPointerException in Conditionals
         // checks if path is empty then uses user input otherwise use the mytext.txt file
         if (path == null) {
-            String inputWords[] = input.split(" ");
-            result = checkWords(inputWords);
-            stopwords = stopWords(result);
+            var inputWords = input.split(" ");
+            wordCount = checkWords(inputWords);
+            stopWords = stopWords(wordCount);
         } else {
-            File f = new File(path);
-            Scanner myReader = new Scanner(f);
-            while (myReader.hasNextLine()) {
-                String data = myReader.nextLine();
-                String inputWords[] = data.split(" ");
-                List<String> temp = checkWords(inputWords);
-                result.addAll(temp);
+            var fileContent = new File(path);
+            var readFile = new Scanner(fileContent);
+            while (readFile.hasNextLine()) {
+                var data = readFile.nextLine();
+                var inputWords = data.split(" ");
+                var temp = checkWords(inputWords);
+                wordCount.addAll(temp);
             }
-            myReader.close();
-            stopwords = stopWords(result);
+            readFile.close();
+            stopWords = stopWords(wordCount);
         }
-        return result.size() - stopwords;
+        return wordCount.size() - stopWords;
     }
 
     // Method checkWords checks if the words only consist of letters and returns a list of valid words
-    private List<String> checkWords(String[] inputWords) {
-        List<String> fileContent = new ArrayList<>();
+    private ArrayList<String> checkWords(String[] inputWords) {
+        var fileContent = new ArrayList<String>();
         // CleanCode: Favor For-Each Over For Loops
-        for (String word : inputWords) {
-            boolean onlyLetters = true;
-            for (int i=0; i<word.length(); i++) {
+        for (var word : inputWords) {
+            var onlyLetters = true;
+            for (var i=0; i<word.length(); i++) {
                 if (!Character.isAlphabetic(word.charAt(i))) {
                     onlyLetters = false;
                 }
@@ -54,22 +54,22 @@ public class Wordcount {
 
     // Method stopWords counts how many times a word of stopwords.txt is inside ArrayList result
     private int stopWords(List<String> result) throws FileNotFoundException {
-        File stopwords = new File("src/main/resources/stopwords.txt");
-        int words = 0;
+        var stopwords = new File("src/main/resources/stopwords.txt");
+        var words = 0;
 
-        Scanner myReader = new Scanner(stopwords);
-        while (myReader.hasNextLine()) {
-            String data = myReader.nextLine();
-            String[] inputWords = data.split(" ");
-            for (String inputWord : inputWords) {
-                for (String s : result) {
+        var readFile = new Scanner(stopwords);
+        while (readFile.hasNextLine()) {
+            var data = readFile.nextLine();
+            var inputWords = data.split(" ");
+            for (var inputWord : inputWords) {
+                for (var s : result) {
                     if (s.equals(inputWord)) {
                         words++;
                     }
                 }
             }
         }
-        myReader.close();
+        readFile.close();
         return words;
     }
 }
