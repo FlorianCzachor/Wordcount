@@ -3,7 +3,7 @@ import java.util.*;
 import java.io.*;
 
 // CleanCode: Avoid Negations & Always Use Braces
-public class Wordcount {
+public class WordCounter {
 
     public int count(String input, String path) throws FileNotFoundException {
         Objects.requireNonNull(input, "Input must not be null");
@@ -15,7 +15,6 @@ public class Wordcount {
         if (path == null) {
             var inputWords = input.split(" ");
             wordCount = checkWords(inputWords);
-            stopWords = stopWords(wordCount);
         } else {
             var fileContent = new File(path);
             var readFile = new Scanner(fileContent);
@@ -26,8 +25,8 @@ public class Wordcount {
                 wordCount.addAll(temp);
             }
             readFile.close();
-            stopWords = stopWords(wordCount);
         }
+        stopWords = stopWords(wordCount);
         return wordCount.size() - stopWords;
     }
 
@@ -54,10 +53,10 @@ public class Wordcount {
 
     // Method stopWords counts how many times a word of stopwords.txt is inside ArrayList result
     private int stopWords(List<String> result) throws FileNotFoundException {
-        var stopwords = new File("src/main/resources/stopwords.txt");
+        var stopWords = new File("src/main/resources/stopwords.txt");
         var words = 0;
 
-        var readFile = new Scanner(stopwords);
+        var readFile = new Scanner(stopWords);
         while (readFile.hasNextLine()) {
             var data = readFile.nextLine();
             var inputWords = data.split(" ");

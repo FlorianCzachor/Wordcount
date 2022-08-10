@@ -18,7 +18,7 @@ public class Main {
             input = s.nextLine();
             s.close();
         }
-        Wordcount w = new Wordcount();
+        WordCounter w = new WordCounter();
         int count = w.count(input, path);
         System.out.println("Number of words: " + count);
     }
