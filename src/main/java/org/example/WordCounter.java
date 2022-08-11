@@ -16,6 +16,8 @@ public class WordCounter {
         // checks if path is empty then uses user input otherwise use the mytext.txt file
         try {
             if (myTextFilepath.isEmpty()) {
+                userInput = userInput.replaceAll("-", " ");
+                userInput = userInput.replaceAll("\\.", " ");
                 var inputWords = userInput.split(" ");
                 wordCounter = checkWords(inputWords);
             } else {
