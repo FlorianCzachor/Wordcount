@@ -6,28 +6,33 @@ import java.io.*;
 public class WordCounter {
     final static String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
 
-    public int count(String userInput, String myTextFilepath) throws FileNotFoundException {
+    public int count(String userInput, String myTextFilepath) {
         Objects.requireNonNull(userInput, "UserInput must not be null");
         var wordCounter = new ArrayList<String>();
         var stopWords = 0;
 
         // CleanCode: Avoid NullPointerException in Conditionals
         // checks if path is empty then uses user input otherwise use the mytext.txt file
-        if (myTextFilepath == null) {
-            var inputWords = userInput.split(" ");
-            wordCounter = checkWords(inputWords);
-        } else {
-            var myText = new File(myTextFilepath);
-            var readFile = new Scanner(myText);
-            while (readFile.hasNextLine()) {
-                var data = readFile.nextLine();
-                var inputWords = data.split(" ");
-                var temp = checkWords(inputWords);
-                wordCounter.addAll(temp);
+        try {
+            if (myTextFilepath == null) {
+                var inputWords = userInput.split(" ");
+                wordCounter = checkWords(inputWords);
+            } else {
+                var myText = new File(myTextFilepath);
+                var readFile = new Scanner(myText);
+                while (readFile.hasNextLine()) {
+                    var data = readFile.nextLine();
+                    var inputWords = data.split(" ");
+                    var temp = checkWords(inputWords);
+                    wordCounter.addAll(temp);
+                }
+                readFile.close();
             }
-            readFile.close();
+
+            stopWords = stopWords(wordCounter);
+        } catch (FileNotFoundException e) {
+            System.out.println("File was not found.");
         }
-        stopWords = stopWords(wordCounter);
         return wordCounter.size() - stopWords;
     }
 
