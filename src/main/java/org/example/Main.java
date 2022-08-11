@@ -1,6 +1,5 @@
 package org.example;
 
-import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -8,7 +7,7 @@ import java.util.Scanner;
 public class Main {
     final static int MY_TEXT_FILEPATH = 0;
     public static void main(String[] args) {
-        String path = null;
+        String path = "";
         String input = "";
 
         if (args.length != 0 && Files.exists(Path.of(args[MY_TEXT_FILEPATH]))) {

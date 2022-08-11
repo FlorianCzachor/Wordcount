@@ -8,13 +8,14 @@ public class WordCounter {
 
     public int count(String userInput, String myTextFilepath) {
         Objects.requireNonNull(userInput, "UserInput must not be null");
+        Objects.requireNonNull(myTextFilepath, "Filepath must not be null");
         var wordCounter = new ArrayList<String>();
         var stopWords = 0;
 
         // CleanCode: Avoid NullPointerException in Conditionals
         // checks if path is empty then uses user input otherwise use the mytext.txt file
         try {
-            if (myTextFilepath == null) {
+            if (myTextFilepath.isEmpty()) {
                 var inputWords = userInput.split(" ");
                 wordCounter = checkWords(inputWords);
             } else {
