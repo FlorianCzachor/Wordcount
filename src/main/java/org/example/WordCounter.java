@@ -30,7 +30,7 @@ public class WordCounter {
             }
 
             stopWords = stopWords(wordCounter);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException fnfe) {
             System.out.println("File was not found.");
         }
         return wordCounter.size() - stopWords;
