@@ -2,22 +2,27 @@ package org.example;
 import java.util.*;
 import java.io.*;
 
-// CleanCode: Avoid Negations & Always Use Braces
 public class WordCounter {
     final static String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
+    public String userInput;
+    public String myTextFilepath;
+    public ArrayList<String> wordCounter;
+    public HashSet<String> uniqueStopWords;
 
-    public int count(String userInput, String myTextFilepath) {
+    public WordCounter(String userInput, String myTextFilepath) {
+        this.userInput = userInput;
+        this.myTextFilepath = myTextFilepath;
+        this.wordCounter = new ArrayList<>();
+        this.uniqueStopWords = new HashSet<>();
+    }
+
+    public int count() {
         Objects.requireNonNull(userInput, "UserInput must not be null");
         Objects.requireNonNull(myTextFilepath, "Filepath must not be null");
-        var wordCounter = new ArrayList<String>();
-        var stopWords = 0;
 
-        // CleanCode: Avoid NullPointerException in Conditionals
-        // checks if path is empty then uses user input otherwise use the mytext.txt file
         try {
             if (myTextFilepath.isEmpty()) {
-                userInput = userInput.replaceAll("-", " ");
-                userInput = userInput.replaceAll("\\.", " ");
+                userInput = userInput.replaceAll("[-.]", " ");
                 var inputWords = userInput.split(" ");
                 wordCounter = checkWords(inputWords);
             } else {
@@ -31,18 +36,14 @@ public class WordCounter {
                 }
                 readFile.close();
             }
-
-            stopWords = stopWords(wordCounter);
         } catch (FileNotFoundException fnfe) {
             System.out.println("File was not found.");
         }
-        return wordCounter.size() - stopWords;
+        return wordCounter.size() - stopWords();
     }
 
-    // Method checkWords checks if the words only consist of letters and returns a list of valid words
     private ArrayList<String> checkWords(String[] inputWords) {
         var wordCounter = new ArrayList<String>();
-        // CleanCode: Favor For-Each Over For Loops
         for (var word : inputWords) {
             var onlyLetters = true;
             for (var i=0; i<word.length(); i++) {
@@ -60,24 +61,33 @@ public class WordCounter {
         return wordCounter;
     }
 
-    // Method stopWords counts how many times a word of stopwords.txt is inside ArrayList result
-    private int stopWords(List<String> result) throws FileNotFoundException {
+    private int stopWords() {
         var stopWords = new File(STOP_WORDS_PATH);
         var words = 0;
 
-        var readFile = new Scanner(stopWords);
-        while (readFile.hasNextLine()) {
-            var data = readFile.nextLine();
-            var inputWords = data.split(" ");
-            for (var inputWord : inputWords) {
-                for (var s : result) {
-                    if (s.equals(inputWord)) {
-                        words++;
+        try {
+            var readFile = new Scanner(stopWords);
+            while (readFile.hasNextLine()) {
+                var data = readFile.nextLine();
+                var inputWords = data.split(" ");
+                for (var inputWord : inputWords) {
+                    for (var s : wordCounter) {
+                        if (s.equals(inputWord)) {
+                            words++;
+                            uniqueStopWords.add(s);
+                        }
                     }
                 }
             }
+            readFile.close();
+        } catch (FileNotFoundException fnfe) {
+            System.out.println("File was not found.");
         }
-        readFile.close();
         return words;
+    }
+
+    public int uniqueWordCount() {
+        var uniqueCount = new HashSet<>(wordCounter);
+        return uniqueCount.size() - uniqueStopWords.size();
     }
 }

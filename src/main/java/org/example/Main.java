@@ -19,8 +19,9 @@ public class Main {
             userInput.close();
         }
 
-        var wc = new WordCounter();
-        var wordCount = wc.count(input, path);
-        System.out.println("Number of words: " + wordCount);
+        var wc = new WordCounter(input, path);
+        var wordCount = wc.count();
+        var uniqueWordCount = wc.uniqueWordCount();
+        System.out.println("Number of words: " + wordCount + ", unique: " + uniqueWordCount);
     }
 }
