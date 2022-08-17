@@ -25,6 +25,26 @@ public class WordCounter {
         this.uniqueStopWords = new HashSet<>();
     }
 
+    /**
+     * Counts number of words from .txt file or console user input.
+     *
+     * <p>
+     * Only counts alphabetic words, words containing with a '-' or a '.'
+     *
+     * Example:
+     * <pre>
+     *     ToDo: How to
+     * int capacity = cargoShip.getRemainingCapacity(); // 1
+     * Queue&lt;Supply> supplies = Arrays.asList(new Supply("Apple"));
+     * Queue&lt;Supply> spareSupplies = cargoShip.load(supplies);
+     * spareSupplies.isEmpty(); // true;
+     * cargoShip.getRemainingCapacity() == 0; // true
+     * </pre>
+     *
+     * @return words that were counted
+     *      ToDo: How to
+     * @see WordCounter#checkWords() check words validity
+     */
     public int count() {
         Objects.requireNonNull(userInput, "UserInput must not be null");
         Objects.requireNonNull(myTextFilepath, "Filepath must not be null");
