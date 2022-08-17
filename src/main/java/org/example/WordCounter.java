@@ -132,6 +132,17 @@ public class WordCounter {
         return words;
     }
 
+    /**
+     * Filters input words with hashset to get the number of unique words
+     *
+     * <p>
+     * Example:
+     * <pre>
+     *     ToDo: How to
+     * </pre>
+     *
+     * @return number of unique words
+     */
     public int uniqueWordCount() {
         var uniqueCount = new HashSet<>(wordCounter);
         return uniqueCount.size() - uniqueStopWords.size();
