@@ -2,6 +2,15 @@ package org.example;
 import java.util.*;
 import java.io.*;
 
+/**
+ * A word counter can count the number of words as well as the number of unique words.
+ *
+ * <p>
+ * Words can either be counted from a .txt file, or from user console input.
+ * The stop words file contains words, that should be excluded from the counting.
+ * Only alphabetic words, words containing with a '-' or a '.' are counted.
+ * The count is never negative.
+ */
 public class WordCounter {
     final static String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
     public String userInput;
