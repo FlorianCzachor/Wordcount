@@ -95,6 +95,18 @@ public class WordCounter {
         return wordCounter;
     }
 
+    /**
+     * Counts the number of stop words in input
+     * Also processes uniqueStopWords for uniqueWordCount() method
+     *
+     * <p>
+     * Example:
+     * <pre>
+     *     ToDo: How to
+     * </pre>
+     *
+     * @return stop words that were counted
+     */
     private int stopWords() {
         var stopWords = new File(STOP_WORDS_PATH);
         var words = 0;
