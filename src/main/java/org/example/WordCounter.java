@@ -30,7 +30,10 @@ public class WordCounter {
      *
      * <p>
      * Only counts alphabetic words, words containing with a '-' or a '.'
-     * Example: ToDo: How to
+     * Example:
+     * <pre>
+     *     ToDo: How to
+     * </pre>
      *
      * @return words that were counted
      * @see WordCounter#checkWords() check words validity ToDo: How to
@@ -61,6 +64,18 @@ public class WordCounter {
         return wordCounter.size() - stopWords();
     }
 
+    /**
+     * Checks if every word is alphabetic
+     *
+     * <p>
+     * Only adds alphabetic words to ArrayList
+     * Example:
+     * <pre>
+     *     ToDo: How to
+     * </pre>
+     *
+     * @return ArrayList with alphabetic words
+     */
     private ArrayList<String> checkWords(String[] inputWords) {
         var wordCounter = new ArrayList<String>();
         for (var word : inputWords) {
