@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class WordCounterTest {
 
     @Test
-    // @ParameteriarizedTest
+    // @ParameterizedTest
     // @Variable
     void UserInputContainsStopWord() {
         var wordCount = new WordCounter("word word word a","");

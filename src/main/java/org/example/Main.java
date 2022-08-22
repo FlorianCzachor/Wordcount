@@ -10,13 +10,16 @@ public class Main {
         String path = "";
         String input = "";
 
-        if (args.length != 0 && Files.exists(Path.of(args[MY_TEXT_FILEPATH]))) {
-            path = args[0];
-        } else {
+        if (args.length == 0) {
             var userInput = new Scanner(System.in);
             System.out.print("Enter text: ");
             input = userInput.nextLine();
             userInput.close();
+        } else if (Files.exists(Path.of(args[MY_TEXT_FILEPATH]))){
+            path = args[0];
+        } else {
+            System.out.println("File not found");
+            return;
         }
 
         var wc = new WordCounter(input, path);
