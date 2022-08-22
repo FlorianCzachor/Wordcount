@@ -6,10 +6,12 @@ import java.io.*;
  * A word counter can count the number of words as well as the number of unique words.
  *
  * <p>
- * Words can either be counted from a .txt file, or from user console input.
- * The stop words file contains words, that should be excluded from the counting.
- * Only alphabetic words, words containing with a '-' or a '.' are counted.
- * The count is never negative.
+ * <ul>
+ * <li> Words can either be counted from a .txt file, or from user console input.
+ * <li> The stop words file contains words, that should be excluded from the counting.
+ * <li> Only alphabetic words, words containing with a '-' or a '.' are counted.
+ * <li> The count is never negative.
+ * </ul>
  */
 public class WordCounter {
     final static String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
@@ -65,14 +67,10 @@ public class WordCounter {
     }
 
     /**
-     * Checks if every word is alphabetic
+     * Checks if word is alphabetic then adds to ArrayList
      *
      * <p>
      * Only adds alphabetic words to ArrayList
-     * Example:
-     * <pre>
-     *     ToDo: How to
-     * </pre>
      *
      * @return ArrayList with alphabetic words
      */
@@ -95,18 +93,6 @@ public class WordCounter {
         return wordCounter;
     }
 
-    /**
-     * Counts the number of stop words in input
-     * Also processes uniqueStopWords for uniqueWordCount() method
-     *
-     * <p>
-     * Example:
-     * <pre>
-     *     ToDo: How to
-     * </pre>
-     *
-     * @return stop words that were counted
-     */
     private int stopWords() {
         var stopWords = new File(STOP_WORDS_PATH);
         var words = 0;
@@ -134,12 +120,7 @@ public class WordCounter {
 
     /**
      * Filters input words with hashset to get the number of unique words
-     *
-     * <p>
-     * Example:
-     * <pre>
-     *     ToDo: How to
-     * </pre>
+     * Then subtracts with uniqueStopWords, because stopWords are not counted
      *
      * @return number of unique words
      */
