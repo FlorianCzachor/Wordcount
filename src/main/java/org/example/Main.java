@@ -25,6 +25,6 @@ public class Main {
         var wc = new WordCounter(input, path);
         var wordCount = wc.count();
         var uniqueWordCount = wc.uniqueWordCount();
-        System.out.println("Number of words: " + wordCount + ", unique: " + uniqueWordCount);
+        System.out.printf(String.format("Number of words: %d, unique: %d", wordCount, uniqueWordCount));
     }
 }
