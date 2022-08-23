@@ -4,7 +4,7 @@ import java.io.*;
 
 /**
  * A word counter can count the number of words as well as the number of unique words.
- *
+ * To know more about which words exactly are counted see {@link WordCounter#count()}
  * <p>
  * <ul>
  * <li> Words can either be counted from a .txt file, or from user console input.
@@ -29,16 +29,30 @@ public class WordCounter {
 
     /**
      * Counts number of words from .txt file or console user input.
-     *
+     * They contain alphabetic letters from (A-Z, a-z) (=> see {@link WordCounter#checkWords(String[])}) and are separated by white-space(s).
+     * Hyphens (-) and Periods (.) are also valid and are converted into white-spaces in order to count the words.
+     * Other words are not counted.
      * <p>
-     * Only counts alphabetic words, words containing with a '-' or a '.'
+     * Stop words are predefined words in the requirements and are stored in a text file named "stopwords.txt".
+     * These words are: "on", "the", "off", "a"
+     * If the file can't be loaded, stop words are ignored.
+     * <p>
      * Example:
      * <pre>
-     *     ToDo: How to
+     *    inputText => word count ( + unique word count {@link WordCounter#uniqueWordCount()})
+     *           "word" => 1
+     *      "word word" => 2
+     *     "word word." => 2
+     * "word word-word" => 3
+     *     "word wo3rd" => 1 // "3" not in A-Z or a-z
+     *     "word, word" => 1 // "," not in A-Z or a-z
+     *        "word on" => 1 // "on" is a stop word
      * </pre>
      *
-     * @return words that were counted
-     * @see WordCounter#checkWords() check words validity ToDo: How to
+     * @return number words containing alphabetic letters that are separated by white-space(s)
+     * and are not stop words
+     * @throws NullPointerException if userInput or myTextFilePath is null
+     * @see WordCounter#checkWords(String[]) check if words alphabetic letters from (A-Z, a-z)
      */
     public int count() {
         Objects.requireNonNull(userInput, "UserInput must not be null");
