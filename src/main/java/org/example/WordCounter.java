@@ -52,7 +52,7 @@ public class WordCounter {
      * @return number words containing alphabetic letters that are separated by white-space(s)
      * and are not stop words
      * @throws NullPointerException if userInput or myTextFilePath is null
-     * @see WordCounter#checkWords(String[]) check if words alphabetic letters from (A-Z, a-z)
+     * @see WordCounter#checkWords(String[]) check if words are alphabetic letters from (A-Z, a-z)
      */
     public int count() {
         Objects.requireNonNull(userInput, "UserInput must not be null");
@@ -80,14 +80,6 @@ public class WordCounter {
         return wordCounter.size() - stopWords();
     }
 
-    /**
-     * Checks if word is alphabetic then adds to ArrayList
-     *
-     * <p>
-     * Only adds alphabetic words to ArrayList
-     *
-     * @return ArrayList with alphabetic words
-     */
     private ArrayList<String> checkWords(String[] inputWords) {
         var wordCounter = new ArrayList<String>();
         for (var word : inputWords) {
@@ -133,10 +125,23 @@ public class WordCounter {
     }
 
     /**
-     * Filters input words with hashset to get the number of unique words
-     * Then subtracts with uniqueStopWords, because stopWords are not counted
+     * Counts number of unique words from already filtered words Arraylist.
+     * These words get passed through a HashSet, so that only one of every word exists.
+     * <p>
+     * The size of that list is subtracted by the number of unique stop words.
+     * You can find more information on stop words here: {@link WordCounter#count()}
+     * <p>
+     * Example:
+     * <pre>
+     *    inputText => word count {@link WordCounter#count()} + unique word count
+     *              "hello" => 1 + 1
+     *        "hello hello" => 2 + 1
+     *        "hello world" => 2 + 2
+     * "hello on the world" => 2 + 2 // "on" and "the" are stop words
+     * </pre>
      *
-     * @return number of unique words
+     * @return number of valid alphabetic words subtracted by the number of unique stop words
+     * @see WordCounter#count()
      */
     public int uniqueWordCount() {
         var uniqueCount = new HashSet<>(wordCounter);
