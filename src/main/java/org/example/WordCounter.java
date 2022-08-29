@@ -14,11 +14,11 @@ import java.io.*;
  * </ul>
  */
 public class WordCounter {
-    final static String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
-    public String userInput;
-    public String myTextFilepath;
-    public ArrayList<String> countWords;
-    public HashSet<String> uniqueStopWords;
+    private final static String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
+    private String userInput;
+    private final String myTextFilepath;
+    private ArrayList<String> countWords;
+    private final HashSet<String> uniqueStopWords;
 
     public WordCounter(String userInput, String myTextFilepath) {
         this.userInput = userInput;
