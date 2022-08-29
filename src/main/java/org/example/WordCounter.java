@@ -17,13 +17,13 @@ public class WordCounter {
     final static String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
     public String userInput;
     public String myTextFilepath;
-    public ArrayList<String> wordCounter;
+    public ArrayList<String> countWords;
     public HashSet<String> uniqueStopWords;
 
     public WordCounter(String userInput, String myTextFilepath) {
         this.userInput = userInput;
         this.myTextFilepath = myTextFilepath;
-        this.wordCounter = new ArrayList<>();
+        this.countWords = new ArrayList<>();
         this.uniqueStopWords = new HashSet<>();
     }
 
@@ -61,58 +61,58 @@ public class WordCounter {
         try {
             if (myTextFilepath.isEmpty()) {
                 userInput = userInput.replaceAll("[-.]", " ");
-                var inputWords = userInput.split(" ");
-                wordCounter = checkWords(inputWords);
+                var splitWords = userInput.split(" ");
+                countWords = checkWords(splitWords);
             } else {
-                var myText = new File(myTextFilepath);
-                var readFile = new Scanner(myText);
+                var myTextFile = new File(myTextFilepath);
+                var readFile = new Scanner(myTextFile);
                 while (readFile.hasNextLine()) {
-                    var data = readFile.nextLine();
-                    var inputWords = data.split(" ");
-                    var temp = checkWords(inputWords);
-                    wordCounter.addAll(temp);
+                    var fileContent = readFile.nextLine();
+                    var splitWords = fileContent.split(" ");
+                    var checkedWords = checkWords(splitWords);
+                    countWords.addAll(checkedWords);
                 }
                 readFile.close();
             }
         } catch (FileNotFoundException fnfe) {
             System.out.println("File was not found.");
         }
-        return wordCounter.size() - stopWords();
+        return countWords.size() - stopWords();
     }
 
-    private ArrayList<String> checkWords(String[] inputWords) {
-        var wordCounter = new ArrayList<String>();
-        for (var word : inputWords) {
-            var onlyLetters = true;
+    private ArrayList<String> checkWords(String[] splitWords) {
+        var checkedWords = new ArrayList<String>();
+        for (var word : splitWords) {
+            var onlyContainsLetters = true;
             for (var i=0; i<word.length(); i++) {
                 if (!Character.isAlphabetic(word.charAt(i))) {
-                    onlyLetters = false;
+                    onlyContainsLetters = false;
                 }
             }
             if (word.equals("")) {
                 continue;
             }
-            if (onlyLetters) {
-                wordCounter.add(word);
+            if (onlyContainsLetters) {
+                checkedWords.add(word);
             }
         }
-        return wordCounter;
+        return checkedWords;
     }
 
     private int stopWords() {
-        var stopWords = new File(STOP_WORDS_PATH);
-        var words = 0;
+        var stopWordsFile = new File(STOP_WORDS_PATH);
+        var wordCounter = 0;
 
         try {
-            var readFile = new Scanner(stopWords);
+            var readFile = new Scanner(stopWordsFile);
             while (readFile.hasNextLine()) {
-                var data = readFile.nextLine();
-                var inputWords = data.split(" ");
-                for (var inputWord : inputWords) {
-                    for (var s : wordCounter) {
-                        if (s.equals(inputWord)) {
-                            words++;
-                            uniqueStopWords.add(s);
+                var fileContent = readFile.nextLine();
+                var stopWords = fileContent.split(" ");
+                for (var stopWord : stopWords) {
+                    for (var word : countWords) {
+                        if (word.equals(stopWord)) {
+                            wordCounter++;
+                            uniqueStopWords.add(word);
                         }
                     }
                 }
@@ -121,7 +121,7 @@ public class WordCounter {
         } catch (FileNotFoundException fnfe) {
             System.out.println("File was not found.");
         }
-        return words;
+        return wordCounter;
     }
 
     /**
@@ -144,7 +144,7 @@ public class WordCounter {
      * @see WordCounter#count()
      */
     public int uniqueWordCount() {
-        var uniqueCount = new HashSet<>(wordCounter);
-        return uniqueCount.size() - uniqueStopWords.size();
+        var uniqueWords = new HashSet<>(countWords);
+        return uniqueWords.size() - uniqueStopWords.size();
     }
 }
