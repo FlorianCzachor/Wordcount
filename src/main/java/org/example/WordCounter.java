@@ -18,13 +18,12 @@ public class WordCounter {
     private String userInput;
     private final String myTextFilepath;
     private ArrayList<String> countWords;
-    private final HashSet<String> uniqueStopWords;
+    private final HashSet<String> uniqueStopWords = new HashSet<>();
 
     public WordCounter(String userInput, String myTextFilepath) {
         this.userInput = userInput;
         this.myTextFilepath = myTextFilepath;
         this.countWords = new ArrayList<>();
-        this.uniqueStopWords = new HashSet<>();
     }
 
     /**
