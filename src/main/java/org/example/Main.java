@@ -5,15 +5,17 @@ import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Main {
-    static final int MY_TEXT_FILEPATH = 0;
+
+    public static final int INDEX_OF_FILE = 0;
+
     public static void main(String[] args) {
         String filePath = "";
         String text = "";
 
         if (args.length == 0) {
             text = getUserInputTextFromStandardIn();
-        } else if (Files.exists(Path.of(args[MY_TEXT_FILEPATH]))){
-            filePath = args[0];
+        } else if (Files.exists(Path.of(args[INDEX_OF_FILE]))){
+            filePath = args[INDEX_OF_FILE];
         } else {
             System.out.println("File not found");
             return;
