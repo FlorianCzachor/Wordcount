@@ -14,7 +14,7 @@ import java.io.*;
  * </ul>
  */
 public class WordCounter {
-    private final static String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
+    private static final String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
     private String userInput;
     private final String myTextFilepath;
     private ArrayList<String> countWords;
