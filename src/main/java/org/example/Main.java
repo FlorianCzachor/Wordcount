@@ -11,10 +11,7 @@ public class Main {
         String text = "";
 
         if (args.length == 0) {
-            var scanner = new Scanner(System.in);
-            System.out.print("Enter text: ");
-            text = scanner.nextLine();
-            scanner.close();
+            text = getUserInputTextFromStandardIn();
         } else if (Files.exists(Path.of(args[MY_TEXT_FILEPATH]))){
             filePath = args[0];
         } else {
@@ -26,5 +23,12 @@ public class Main {
         var wordCount = wc.count();
         var uniqueWordCount = wc.uniqueWordCount();
         System.out.printf(String.format("Number of words: %d, unique: %d", wordCount, uniqueWordCount));
+    }
+
+    private static String getUserInputTextFromStandardIn() {
+        try (var scanner = new Scanner(System.in)) {
+            System.out.print("Enter text: ");
+            return scanner.nextLine();
+        }
     }
 }
