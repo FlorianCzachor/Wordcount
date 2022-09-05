@@ -15,14 +15,17 @@ import java.io.*;
  */
 public class WordCounter {
     private static final String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
-    private String userInput;
-    private final String myTextFilepath;
+    private String text;
+    private final String filePath;
     private ArrayList<String> countWords;
     private final HashSet<String> uniqueStopWords = new HashSet<>();
 
     public WordCounter(String text, String filePath) {
-        this.userInput = text;
-        this.myTextFilepath = filePath;
+        Objects.requireNonNull(text, "Text must not be null");
+        Objects.requireNonNull(filePath, "FilePath must not be null");
+
+        this.text = text;
+        this.filePath = filePath;
         this.countWords = new ArrayList<>();
     }
 
@@ -55,16 +58,13 @@ public class WordCounter {
      * @see WordCounter#uniqueWordCount() there is also a method for counting unique words
      */
     public int countWords() {
-        Objects.requireNonNull(userInput, "UserInput must not be null");
-        Objects.requireNonNull(myTextFilepath, "Filepath must not be null");
-
         try {
-            if (myTextFilepath.isEmpty()) {
-                userInput = userInput.replaceAll("[-.]", " ");
-                var splitWords = userInput.split(" ");
+            if (filePath.isEmpty()) {
+                text = text.replaceAll("[-.]", " ");
+                var splitWords = text.split(" ");
                 countWords = checkWords(splitWords);
             } else {
-                var myTextFile = new File(myTextFilepath);
+                var myTextFile = new File(filePath);
                 var readFile = new Scanner(myTextFile);
                 while (readFile.hasNextLine()) {
                     var fileContent = readFile.nextLine();
