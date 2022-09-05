@@ -31,7 +31,7 @@ public class WordCounter {
      * They consist of alphabetic letters from (A-Z, a-z) (=> see {@link WordCounter#checkWords(String[])}) and are separated by white-space(s).
      * Other words are not counted.
      * <p>
-     * Stop words are predefined words in the requirements and are stored in a text file named "stopwords.txt".
+     * Predefined stop words are excluded. Stop words which are defined in the requirements and are stored in a text file named "stopwords.txt".
      * These words are: "on", "the", "off", "a"
      * If the file can't be loaded, stop words are ignored.
      * <p>
