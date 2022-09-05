@@ -17,7 +17,7 @@ public class WordCounter {
     private static final String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
     private String text;
     private final String filePath;
-    private ArrayList<String> countWords;
+    private ArrayList<String> wordCount;
     private final HashSet<String> uniqueStopWords = new HashSet<>();
 
     public WordCounter(String text, String filePath) {
@@ -26,12 +26,12 @@ public class WordCounter {
 
         this.text = text;
         this.filePath = filePath;
-        this.countWords = new ArrayList<>();
+        this.wordCount = new ArrayList<>();
     }
 
     /**
      * Counts number of words from .txt file which you need to set in the constructor, for more information {@link WordCounter#WordCounter(String text, String filePath)} or console user input.
-     * They consist of alphabetic letters from (A-Z, a-z) (=> see {@link WordCounter#checkWords(String[])}) and are separated by white-space(s).
+     * They consist of alphabetic letters from (A-Z, a-z) (=> see {@link WordCounter#filterWordsContainingAlphabeticCharsOnly(String[])}) and are separated by white-space(s).
      * Other words are not counted.
      * <p>
      * Predefined stop words are excluded. Stop words which are defined in the requirements and are stored in a text file named "stopwords.txt".
@@ -54,49 +54,50 @@ public class WordCounter {
      * @return number of words containing alphabetic letters that are separated by white-space(s)
      * and are not stop words
      * @throws NullPointerException if userInput or myTextFilePath is null
-     * @see WordCounter#checkWords(String[]) check if words are alphabetic letters from (A-Z, a-z)
+     * @see WordCounter#filterWordsContainingAlphabeticCharsOnly(String[]) check if words are alphabetic letters from (A-Z, a-z)
      * @see WordCounter#uniqueWordCount() there is also a method for counting unique words
      */
     public int countWords() {
         try {
             if (filePath.isEmpty()) {
                 text = text.replaceAll("[-.]", " ");
-                var splitWords = text.split(" ");
-                countWords = checkWords(splitWords);
+                var wordCandidates = text.split(" ");
+                wordCount = filterWordsContainingAlphabeticCharsOnly(wordCandidates);
             } else {
-                var myTextFile = new File(filePath);
-                var readFile = new Scanner(myTextFile);
-                while (readFile.hasNextLine()) {
-                    var fileContent = readFile.nextLine();
-                    var splitWords = fileContent.split(" ");
-                    var checkedWords = checkWords(splitWords);
-                    countWords.addAll(checkedWords);
+                var file = new File(filePath);
+                try (var scanner = new Scanner(file)) {
+                    while (scanner.hasNextLine()) {
+                        var fileContent = scanner.nextLine();
+                        var wordCandidates = fileContent.split(" ");
+                        var words = filterWordsContainingAlphabeticCharsOnly(wordCandidates);
+                        wordCount.addAll(words);
+                    }
                 }
-                readFile.close();
             }
-        } catch (FileNotFoundException fnfe) {
-            System.out.println("File was not found.");
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException("The file " + filePath + " which contains text to be counted was not found.", e);
         }
-        return countWords.size() - stopWords();
+        return wordCount.size() - stopWords();
     }
 
-    private ArrayList<String> checkWords(String[] splitWords) {
-        var checkedWords = new ArrayList<String>();
-        for (var word : splitWords) {
-            var onlyContainsLetters = true;
-            for (var i=0; i<word.length(); i++) {
-                if (!Character.isAlphabetic(word.charAt(i))) {
-                    onlyContainsLetters = false;
+    private ArrayList<String> filterWordsContainingAlphabeticCharsOnly(String[] wordCandidates) {
+        var words = new ArrayList<String>();
+        for (var wordCandidate : wordCandidates) {
+            var hasLettersOnly = true;
+            for (char c : wordCandidate.toCharArray()) {
+                if (Character.isAlphabetic(c)) {
+                    continue;
                 }
+                hasLettersOnly = false;
             }
-            if (word.equals("")) {
+            if (wordCandidate.equals("")) {
                 continue;
             }
-            if (onlyContainsLetters) {
-                checkedWords.add(word);
+            if (hasLettersOnly) {
+                words.add(wordCandidate);
             }
         }
-        return checkedWords;
+        return words;
     }
 
     private int stopWords() {
@@ -109,7 +110,7 @@ public class WordCounter {
                 var fileContent = readFile.nextLine();
                 var stopWords = fileContent.split(" ");
                 for (var stopWord : stopWords) {
-                    for (var word : countWords) {
+                    for (var word : wordCount) {
                         if (word.equals(stopWord)) {
                             wordCounter++;
                             uniqueStopWords.add(word);
@@ -144,7 +145,7 @@ public class WordCounter {
      * @see WordCounter#countWords()
      */
     public int uniqueWordCount() {
-        var uniqueWords = new HashSet<>(countWords);
+        var uniqueWords = new HashSet<>(wordCount);
         return uniqueWords.size() - uniqueStopWords.size();
     }
 }
