@@ -4,7 +4,7 @@ import java.io.*;
 
 /**
  * A word counter can count the number of words as well as the number of unique words.
- * To know more about which words exactly are counted see {@link WordCounter#count()}
+ * To know more about which words exactly are counted see {@link WordCounter#countWords()}
  * <p>
  * <ul>
  * <li> Words can either be counted from a .txt file, or from user console input.
@@ -20,9 +20,9 @@ public class WordCounter {
     private ArrayList<String> countWords;
     private final HashSet<String> uniqueStopWords = new HashSet<>();
 
-    public WordCounter(String userInput, String myTextFilepath) {
-        this.userInput = userInput;
-        this.myTextFilepath = myTextFilepath;
+    public WordCounter(String text, String filePath) {
+        this.userInput = text;
+        this.myTextFilepath = filePath;
         this.countWords = new ArrayList<>();
     }
 
@@ -53,7 +53,7 @@ public class WordCounter {
      * @throws NullPointerException if userInput or myTextFilePath is null
      * @see WordCounter#checkWords(String[]) check if words are alphabetic letters from (A-Z, a-z)
      */
-    public int count() {
+    public int countWords() {
         Objects.requireNonNull(userInput, "UserInput must not be null");
         Objects.requireNonNull(myTextFilepath, "Filepath must not be null");
 
@@ -128,11 +128,11 @@ public class WordCounter {
      * These words get passed through a HashSet, so that only one of every word exists.
      * <p>
      * The size of that list is subtracted by the number of unique stop words.
-     * You can find more information on stop words here: {@link WordCounter#count()}
+     * You can find more information on stop words here: {@link WordCounter#countWords()}
      * <p>
      * Example:
      * <pre>
-     *    inputText => word count {@link WordCounter#count()} + unique word count
+     *    inputText => word count {@link WordCounter#countWords()} + unique word count
      *              "hello" => 1 + 1
      *        "hello hello" => 2 + 1
      *        "hello world" => 2 + 2
@@ -140,7 +140,7 @@ public class WordCounter {
      * </pre>
      *
      * @return number of valid alphabetic words subtracted by the number of unique stop words
-     * @see WordCounter#count()
+     * @see WordCounter#countWords()
      */
     public int uniqueWordCount() {
         var uniqueWords = new HashSet<>(countWords);

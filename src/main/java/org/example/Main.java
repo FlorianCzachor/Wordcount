@@ -21,9 +21,9 @@ public class Main {
             return;
         }
 
-        var wc = new WordCounter(text, filePath);
-        var wordCount = wc.count();
-        var uniqueWordCount = wc.uniqueWordCount();
+        var wordCounter = new WordCounter(text, filePath);
+        var wordCount = wordCounter.countWords();
+        var uniqueWordCount = wordCounter.uniqueWordCount();
         System.out.printf(String.format("Number of words: %d, unique: %d", wordCount, uniqueWordCount));
     }
 
