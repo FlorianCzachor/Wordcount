@@ -37,7 +37,7 @@ public class WordCounter {
      * <p>
      * Example:
      * <pre>
-     *    inputText => word count ( + unique word count {@link WordCounter#uniqueWordCount()})
+     *        inputText => word count
      *           "word" => 1
      *      "word word" => 2
      *     "word word." => 2
@@ -48,10 +48,11 @@ public class WordCounter {
      *        "word on" => 1 // "on" is a stop word
      * </pre>
      *
-     * @return number words containing alphabetic letters that are separated by white-space(s)
+     * @return number of words containing alphabetic letters that are separated by white-space(s)
      * and are not stop words
      * @throws NullPointerException if userInput or myTextFilePath is null
      * @see WordCounter#checkWords(String[]) check if words are alphabetic letters from (A-Z, a-z)
+     * @see WordCounter#uniqueWordCount() there is also a method for counting unique words
      */
     public int countWords() {
         Objects.requireNonNull(userInput, "UserInput must not be null");
