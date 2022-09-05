@@ -29,7 +29,6 @@ public class WordCounter {
     /**
      * Counts number of words from .txt file or console user input.
      * They contain alphabetic letters from (A-Z, a-z) (=> see {@link WordCounter#checkWords(String[])}) and are separated by white-space(s).
-     * Hyphens (-) and Periods (.) are also valid and are converted into white-spaces in order to count the words.
      * Other words are not counted.
      * <p>
      * Stop words are predefined words in the requirements and are stored in a text file named "stopwords.txt".
