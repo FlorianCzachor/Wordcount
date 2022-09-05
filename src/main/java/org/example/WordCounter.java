@@ -42,6 +42,7 @@ public class WordCounter {
      *      "word word" => 2
      *     "word word." => 2
      * "word word-word" => 3
+     *
      *     "word wo3rd" => 1 // "3" not in A-Z or a-z
      *     "word, word" => 1 // "," not in A-Z or a-z
      *        "word on" => 1 // "on" is a stop word
