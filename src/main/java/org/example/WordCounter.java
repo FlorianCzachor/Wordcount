@@ -27,8 +27,8 @@ public class WordCounter {
     }
 
     /**
-     * Counts number of words from .txt file or console user input.
-     * They contain alphabetic letters from (A-Z, a-z) (=> see {@link WordCounter#checkWords(String[])}) and are separated by white-space(s).
+     * Counts number of words from .txt file which you need to set in the constructor, for more information {@link WordCounter#WordCounter(String text, String filePath)} or console user input.
+     * They consist of alphabetic letters from (A-Z, a-z) (=> see {@link WordCounter#checkWords(String[])}) and are separated by white-space(s).
      * Other words are not counted.
      * <p>
      * Stop words are predefined words in the requirements and are stored in a text file named "stopwords.txt".
