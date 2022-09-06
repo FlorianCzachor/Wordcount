@@ -27,7 +27,6 @@ public class WordCounter {
 
         this.text = text;
         this.filePath = filePath;
-        this.words = new ArrayList<>();
     }
 
     /**
@@ -59,25 +58,7 @@ public class WordCounter {
      * @see WordCounter#countUniqueWords() there is also a method for counting unique words
      */
     public int countWords() {
-        try {
-            if (filePath.isEmpty()) {
-                text = text.replaceAll("[-.]", " ");
-                var wordCandidates = text.split(" ");
-                words = filterWordsContainingAlphabeticCharsOnly(wordCandidates);
-            } else {
-                var file = new File(filePath);
-                try (var scanner = new Scanner(file)) {
-                    while (scanner.hasNextLine()) {
-                        var fileContent = scanner.nextLine();
-                        var wordCandidates = fileContent.split(" ");
-                        words.addAll(filterWordsContainingAlphabeticCharsOnly(wordCandidates));
-                    }
-                }
-            }
-        } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException(String.format("The file %s which contains text to be counted was not found.",
-                    Path.of(filePath).getFileName()), e);
-        }
+        separateWords();
         return words.size() - stopWords();
     }
 
@@ -101,8 +82,33 @@ public class WordCounter {
      * @see WordCounter#countWords()
      */
     public int countUniqueWords() {
+        separateWords();
+
         var uniqueWords = new HashSet<>(words);
         return uniqueWords.size() - uniqueStopWords.size();
+    }
+
+    private void separateWords() {
+        words = new ArrayList<>();
+        try {
+            if (filePath.isEmpty()) {
+                text = text.replaceAll("[-.]", " ");
+                var wordCandidates = text.split(" ");
+                words = filterWordsContainingAlphabeticCharsOnly(wordCandidates);
+            } else {
+                var file = new File(filePath);
+                try (var scanner = new Scanner(file)) {
+                    while (scanner.hasNextLine()) {
+                        var fileContent = scanner.nextLine();
+                        var wordCandidates = fileContent.split(" ");
+                        words.addAll(filterWordsContainingAlphabeticCharsOnly(wordCandidates));
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            throw new IllegalArgumentException(String.format("The file %s which contains text to be counted was not found.",
+                    Path.of(filePath).getFileName()), e);
+        }
     }
 
     private ArrayList<String> filterWordsContainingAlphabeticCharsOnly(String[] wordCandidates) {
