@@ -1,4 +1,5 @@
 package org.example;
+import java.lang.reflect.Array;
 import java.nio.file.Path;
 import java.util.*;
 import java.io.*;
@@ -18,8 +19,6 @@ public class WordCounter {
     private static final String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
     private String text;
     private final String filePath;
-    private ArrayList<String> words;
-    private final HashSet<String> uniqueStopWords = new HashSet<>();
 
     public WordCounter(String text, String filePath) {
         Objects.requireNonNull(text, "Text must not be null");
@@ -58,8 +57,11 @@ public class WordCounter {
      * @see WordCounter#countUniqueWords() there is also a method for counting unique words
      */
     public int countWords() {
-        separateWords();
-        return words.size() - stopWords();
+        var words = new ArrayList<>(separateWordsByWhitespaces());
+        System.out.println(words);
+        var stopWords = new ArrayList<>(stopWords(words));
+        System.out.println(stopWords);
+        return words.size() - stopWords.size();
     }
 
     /**
@@ -82,14 +84,15 @@ public class WordCounter {
      * @see WordCounter#countWords()
      */
     public int countUniqueWords() {
-        separateWords();
-
-        var uniqueWords = new HashSet<>(words);
-        return uniqueWords.size() - uniqueStopWords.size();
+        var words = new ArrayList<>(separateWordsByWhitespaces());
+        System.out.println(words);
+        var uniqueStopWords = new HashSet<>(stopWords(words));
+        System.out.println(uniqueStopWords);
+        return new HashSet<>(words).size() - uniqueStopWords.size();
     }
 
-    private void separateWords() {
-        words = new ArrayList<>();
+    private ArrayList<String> separateWordsByWhitespaces() {
+        var words = new ArrayList<String>();
         try {
             if (filePath.isEmpty()) {
                 text = text.replaceAll("[-.]", " ");
@@ -109,6 +112,7 @@ public class WordCounter {
             throw new IllegalArgumentException(String.format("The file %s which contains text to be counted was not found.",
                     Path.of(filePath).getFileName()), e);
         }
+        return words;
     }
 
     private ArrayList<String> filterWordsContainingAlphabeticCharsOnly(String[] wordCandidates) {
@@ -131,29 +135,27 @@ public class WordCounter {
         return words;
     }
 
-    private int stopWords() {
-        var stopWordsFile = new File(STOP_WORDS_PATH);
-        var stopWordCount = 0;
-
+    private ArrayList<String> stopWords(ArrayList<String> words) {
+        var stopWordsFromText = new ArrayList<String>();
         try {
-            var scanner = new Scanner(stopWordsFile);
-            while (scanner.hasNextLine()) {
-                var fileContent = scanner.nextLine();
-                var stopWords = fileContent.split(" ");
-                for (var stopWord : stopWords) {
-                    for (var word : words) {
-                        if (word.equals(stopWord)) {
-                            stopWordCount++;
-                            uniqueStopWords.add(word);
+            var stopWordsFile = new File(STOP_WORDS_PATH);
+            try (var scanner = new Scanner(stopWordsFile)) {
+                while (scanner.hasNextLine()) {
+                    var fileContent = scanner.nextLine();
+                    var stopWords = fileContent.split(" ");
+                    for (var stopWord : stopWords) {
+                        for (var word : words) {
+                            if (word.equals(stopWord)) {
+                                stopWordsFromText.add(word);
+                            }
                         }
                     }
                 }
             }
-            scanner.close();
         } catch (FileNotFoundException e) {
             System.out.printf("The file %s which contains predefined stop words, that are not counted, was not found.%n",
                     Path.of(STOP_WORDS_PATH).getFileName());
         }
-        return stopWordCount;
+        return stopWordsFromText;
     }
 }
