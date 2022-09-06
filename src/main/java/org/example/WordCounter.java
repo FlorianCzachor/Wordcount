@@ -1,4 +1,5 @@
 package org.example;
+import java.nio.file.Path;
 import java.util.*;
 import java.io.*;
 
@@ -17,7 +18,7 @@ public class WordCounter {
     private static final String STOP_WORDS_PATH = "src/main/resources/stopwords.txt";
     private String text;
     private final String filePath;
-    private ArrayList<String> wordCount;
+    private ArrayList<String> words;
     private final HashSet<String> uniqueStopWords = new HashSet<>();
 
     public WordCounter(String text, String filePath) {
@@ -26,7 +27,7 @@ public class WordCounter {
 
         this.text = text;
         this.filePath = filePath;
-        this.wordCount = new ArrayList<>();
+        this.words = new ArrayList<>();
     }
 
     /**
@@ -55,29 +56,53 @@ public class WordCounter {
      * and are not stop words
      * @throws NullPointerException if userInput or myTextFilePath is null
      * @see WordCounter#filterWordsContainingAlphabeticCharsOnly(String[]) check if words are alphabetic letters from (A-Z, a-z)
-     * @see WordCounter#uniqueWordCount() there is also a method for counting unique words
+     * @see WordCounter#countUniqueWords() there is also a method for counting unique words
      */
     public int countWords() {
         try {
             if (filePath.isEmpty()) {
                 text = text.replaceAll("[-.]", " ");
                 var wordCandidates = text.split(" ");
-                wordCount = filterWordsContainingAlphabeticCharsOnly(wordCandidates);
+                words = filterWordsContainingAlphabeticCharsOnly(wordCandidates);
             } else {
                 var file = new File(filePath);
                 try (var scanner = new Scanner(file)) {
                     while (scanner.hasNextLine()) {
                         var fileContent = scanner.nextLine();
                         var wordCandidates = fileContent.split(" ");
-                        var words = filterWordsContainingAlphabeticCharsOnly(wordCandidates);
-                        wordCount.addAll(words);
+                        words.addAll(filterWordsContainingAlphabeticCharsOnly(wordCandidates));
                     }
                 }
             }
         } catch (FileNotFoundException e) {
-            throw new IllegalArgumentException("The file " + filePath + " which contains text to be counted was not found.", e);
+            throw new IllegalArgumentException(String.format("The file %s which contains text to be counted was not found.",
+                    Path.of(filePath).getFileName()), e);
         }
-        return wordCount.size() - stopWords();
+        return words.size() - stopWords();
+    }
+
+    /**
+     * Counts number of unique words from already filtered words Arraylist.
+     * These words get passed through a HashSet, so that only one of every word exists.
+     * <p>
+     * The size of that list is subtracted by the number of unique stop words.
+     * You can find more information on stop words here: {@link WordCounter#countWords()}
+     * <p>
+     * Example:
+     * <pre>
+     *    inputText => word count {@link WordCounter#countWords()} + unique word count
+     *              "hello" => 1 + 1
+     *        "hello hello" => 2 + 1
+     *        "hello world" => 2 + 2
+     * "hello on the world" => 2 + 2 // "on" and "the" are stop words
+     * </pre>
+     *
+     * @return number of valid alphabetic words subtracted by the number of unique stop words
+     * @see WordCounter#countWords()
+     */
+    public int countUniqueWords() {
+        var uniqueWords = new HashSet<>(words);
+        return uniqueWords.size() - uniqueStopWords.size();
     }
 
     private ArrayList<String> filterWordsContainingAlphabeticCharsOnly(String[] wordCandidates) {
@@ -102,50 +127,27 @@ public class WordCounter {
 
     private int stopWords() {
         var stopWordsFile = new File(STOP_WORDS_PATH);
-        var wordCounter = 0;
+        var stopWordCount = 0;
 
         try {
-            var readFile = new Scanner(stopWordsFile);
-            while (readFile.hasNextLine()) {
-                var fileContent = readFile.nextLine();
+            var scanner = new Scanner(stopWordsFile);
+            while (scanner.hasNextLine()) {
+                var fileContent = scanner.nextLine();
                 var stopWords = fileContent.split(" ");
                 for (var stopWord : stopWords) {
-                    for (var word : wordCount) {
+                    for (var word : words) {
                         if (word.equals(stopWord)) {
-                            wordCounter++;
+                            stopWordCount++;
                             uniqueStopWords.add(word);
                         }
                     }
                 }
             }
-            readFile.close();
-        } catch (FileNotFoundException fnfe) {
-            System.out.println("File was not found.");
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            System.out.printf("The file %s which contains predefined stop words, that are not counted, was not found.%n",
+                    Path.of(STOP_WORDS_PATH).getFileName());
         }
-        return wordCounter;
-    }
-
-    /**
-     * Counts number of unique words from already filtered words Arraylist.
-     * These words get passed through a HashSet, so that only one of every word exists.
-     * <p>
-     * The size of that list is subtracted by the number of unique stop words.
-     * You can find more information on stop words here: {@link WordCounter#countWords()}
-     * <p>
-     * Example:
-     * <pre>
-     *    inputText => word count {@link WordCounter#countWords()} + unique word count
-     *              "hello" => 1 + 1
-     *        "hello hello" => 2 + 1
-     *        "hello world" => 2 + 2
-     * "hello on the world" => 2 + 2 // "on" and "the" are stop words
-     * </pre>
-     *
-     * @return number of valid alphabetic words subtracted by the number of unique stop words
-     * @see WordCounter#countWords()
-     */
-    public int uniqueWordCount() {
-        var uniqueWords = new HashSet<>(wordCount);
-        return uniqueWords.size() - uniqueStopWords.size();
+        return stopWordCount;
     }
 }

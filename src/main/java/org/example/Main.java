@@ -23,7 +23,7 @@ public class Main {
 
         var wordCounter = new WordCounter(text, filePath);
         var wordCount = wordCounter.countWords();
-        var uniqueWordCount = wordCounter.uniqueWordCount();
+        var uniqueWordCount = wordCounter.countUniqueWords();
         System.out.printf(String.format("Number of words: %d, unique: %d", wordCount, uniqueWordCount));
     }
 
