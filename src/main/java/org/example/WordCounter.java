@@ -1,8 +1,12 @@
 package org.example;
-import java.lang.reflect.Array;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.util.*;
-import java.io.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Scanner;
 
 /**
  * A word counter can count the number of words as well as the number of unique words.
@@ -58,9 +62,7 @@ public class WordCounter {
      */
     public int countWords() {
         var words = new ArrayList<>(separateWordsByWhitespaces());
-        System.out.println(words);
         var stopWords = new ArrayList<>(stopWords(words));
-        System.out.println(stopWords);
         return words.size() - stopWords.size();
     }
 
@@ -85,9 +87,7 @@ public class WordCounter {
      */
     public int countUniqueWords() {
         var words = new ArrayList<>(separateWordsByWhitespaces());
-        System.out.println(words);
         var uniqueStopWords = new HashSet<>(stopWords(words));
-        System.out.println(uniqueStopWords);
         return new HashSet<>(words).size() - uniqueStopWords.size();
     }
 
@@ -97,7 +97,7 @@ public class WordCounter {
             if (filePath.isEmpty()) {
                 text = text.replaceAll("[-.]", " ");
                 var wordCandidates = text.split(" ");
-                words = filterWordsContainingAlphabeticCharsOnly(wordCandidates);
+                words.addAll(filterWordsContainingAlphabeticCharsOnly(wordCandidates));
             } else {
                 var file = new File(filePath);
                 try (var scanner = new Scanner(file)) {
@@ -136,17 +136,16 @@ public class WordCounter {
     }
 
     private ArrayList<String> stopWords(ArrayList<String> words) {
-        var stopWordsFromText = new ArrayList<String>();
+        var stopWords = new ArrayList<String>();
         try {
             var stopWordsFile = new File(STOP_WORDS_PATH);
             try (var scanner = new Scanner(stopWordsFile)) {
                 while (scanner.hasNextLine()) {
                     var fileContent = scanner.nextLine();
-                    var stopWords = fileContent.split(" ");
-                    for (var stopWord : stopWords) {
+                    for (var stopWord : fileContent.split(" ")) {
                         for (var word : words) {
                             if (word.equals(stopWord)) {
-                                stopWordsFromText.add(word);
+                                stopWords.add(word);
                             }
                         }
                     }
@@ -156,6 +155,6 @@ public class WordCounter {
             System.out.printf("The file %s which contains predefined stop words, that are not counted, was not found.%n",
                     Path.of(STOP_WORDS_PATH).getFileName());
         }
-        return stopWordsFromText;
+        return stopWords;
     }
 }
