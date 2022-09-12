@@ -10,12 +10,12 @@ import java.util.Scanner;
 
 /**
  * A word counter can count the number of words as well as the number of unique words.
- * To know more about which words exactly are counted see {@link WordCounter#countWords()}
+ * To know more about which words exactly are counted see {@link WordCounter#countWords()} and {@link WordCounter#countUniqueWords()}
  * <p>
  * <ul>
  * <li> Words can either be counted from a .txt file, or from user console input.
- * <li> The stop words file contains words, that should be excluded from the counting.
- * <li> Only alphabetic words, words containing with a '-' or a '.' are counted.
+ * <li> The stop words file contains words, that are excluded from the counting.
+ * <li> Only words consisting of alphabetic letters from (A-Z, a-z) are counted.
  * <li> The count is never negative.
  * </ul>
  */
@@ -24,6 +24,15 @@ public class WordCounter {
     private String text;
     private final String filePath;
 
+    /**
+     * Creates a word counter with either text or a filePath.
+     *
+     * @param text text from user console input.
+     * Must not be null, can be empty.
+     * @param filePath filepath of mytext.txt file.
+     * Must not be null, can be empty.
+     * @throws NullPointerException if text or filePath is null
+     */
     public WordCounter(String text, String filePath) {
         Objects.requireNonNull(text, "Text must not be null");
         Objects.requireNonNull(filePath, "FilePath must not be null");
@@ -33,11 +42,11 @@ public class WordCounter {
     }
 
     /**
-     * Counts number of words from .txt file which you need to set in the constructor, for more information {@link WordCounter#WordCounter(String text, String filePath)} or console user input.
+     * Counts the number of words from a user console input or a .txt file which you need to set in the constructor, for more information {@link WordCounter#WordCounter(String text, String filePath)}.
      * They consist of alphabetic letters from (A-Z, a-z) (=> see {@link WordCounter#filterWordsContainingAlphabeticCharsOnly(String[])}) and are separated by white-space(s).
      * Other words are not counted.
      * <p>
-     * Predefined stop words are excluded. Stop words which are defined in the requirements and are stored in a text file named "stopwords.txt".
+     * Predefined stop words are excluded. Stop words are defined in the requirements and are stored in a text file named "stopwords.txt".
      * These words are: "on", "the", "off", "a"
      * If the file can't be loaded, stop words are ignored.
      * <p>
@@ -54,11 +63,12 @@ public class WordCounter {
      *        "word on" => 1 // "on" is a stop word
      * </pre>
      *
-     * @return number of words containing alphabetic letters that are separated by white-space(s)
+     * @return number of words containing alphabetic letters
+     * that are separated by white-space(s)
      * and are not stop words
-     * @throws NullPointerException if userInput or myTextFilePath is null
+     * @throws NullPointerException if text or filePath is null
      * @see WordCounter#filterWordsContainingAlphabeticCharsOnly(String[]) check if words are alphabetic letters from (A-Z, a-z)
-     * @see WordCounter#countUniqueWords() there is also a method for counting unique words
+     * @see WordCounter#countUniqueWords() count the number of unique words
      */
     public int countWords() {
         var words = new ArrayList<>(separateWordsByWhitespaces());
@@ -67,23 +77,23 @@ public class WordCounter {
     }
 
     /**
-     * Counts number of unique words from already filtered words Arraylist.
-     * These words get passed through a HashSet, so that only one of every word exists.
-     * <p>
-     * The size of that list is subtracted by the number of unique stop words.
-     * You can find more information on stop words here: {@link WordCounter#countWords()}
+     * Counts the number of unique words.
      * <p>
      * Example:
      * <pre>
-     *    inputText => word count {@link WordCounter#countWords()} + unique word count
+     *            inputText => word count {@link WordCounter#countWords()} + unique word count
      *              "hello" => 1 + 1
      *        "hello hello" => 2 + 1
      *        "hello world" => 2 + 2
      * "hello on the world" => 2 + 2 // "on" and "the" are stop words
      * </pre>
      *
-     * @return number of valid alphabetic words subtracted by the number of unique stop words
-     * @see WordCounter#countWords()
+     * @return unique number of words containing alphabetic letters
+     * that are separated by white-space(s)
+     * subtracted by the number of unique stop words
+     * @throws NullPointerException if text or filePath is null
+     * @see WordCounter#filterWordsContainingAlphabeticCharsOnly(String[]) check if words are alphabetic letters from (A-Z, a-z)
+     * @see WordCounter#countWords() count number of words from a .txt file or user console input
      */
     public int countUniqueWords() {
         var words = new ArrayList<>(separateWordsByWhitespaces());
