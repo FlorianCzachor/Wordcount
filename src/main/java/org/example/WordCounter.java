@@ -105,7 +105,7 @@ public class WordCounter {
         var words = new ArrayList<String>();
         try {
             if (filePath.isEmpty()) {
-                text = text.replaceAll("[-.]", " ");
+                text = text.replaceAll("[.]", " ");
                 var wordCandidates = text.split(" ");
                 words.addAll(filterWordsContainingAlphabeticCharsOnly(wordCandidates));
             } else {
@@ -130,7 +130,7 @@ public class WordCounter {
         for (var wordCandidate : wordCandidates) {
             var hasLettersOnly = true;
             for (char c : wordCandidate.toCharArray()) {
-                if (Character.isAlphabetic(c)) {
+                if (Character.isAlphabetic(c) || c=='-') {
                     continue;
                 }
                 hasLettersOnly = false;
