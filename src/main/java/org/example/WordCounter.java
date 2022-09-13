@@ -162,8 +162,8 @@ public class WordCounter {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.printf("The file %s which contains predefined stop words, that are not counted, was not found.%n",
-                    Path.of(STOP_WORDS_PATH).getFileName());
+            throw new IllegalArgumentException(String.format("The file %s which contains predefined stop words, that are not counted, was not found.%n",
+                    Path.of(STOP_WORDS_PATH).getFileName()), e);
         }
         return stopWords;
     }
